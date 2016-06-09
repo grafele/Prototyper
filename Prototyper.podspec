@@ -17,7 +17,7 @@ The Prototyper framework allows you to create a mix between app prototypes and r
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Stefan Kofler' => 'grafele@gmail.com' }
-  s.source           = { :git => 'https://github.com/grafeke/Prototyper.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/grafele/Prototyper.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/kofse'
 
   s.ios.deployment_target = '8.0'
