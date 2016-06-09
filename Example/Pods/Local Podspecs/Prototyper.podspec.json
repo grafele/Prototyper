@@ -1,0 +1,22 @@
+{
+  "name": "Prototyper",
+  "version": "0.1.0",
+  "summary": "A short description of Prototyper.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/Prototyper",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Stefan Kofler": "grafele@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/Prototyper.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Prototyper/Classes/**/*"
+}

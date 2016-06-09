@@ -1,15 +1,7 @@
-#
-# Be sure to run `pod lib lint Prototyper.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'Prototyper'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of Prototyper.'
+  s.summary          = 'Framework to mix prototypes and real apps.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,15 +10,15 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+The Prototyper framework allows you to create a mix between app prototypes and real apps.
                        DESC
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/Prototyper'
+  s.homepage         = 'https://github.com/grafele/Prototyper'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Stefan Kofler' => 'grafele@gmail.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/Prototyper.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => 'https://github.com/grafeke/Prototyper.git', :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/kofse'
 
   s.ios.deployment_target = '8.0'
 
