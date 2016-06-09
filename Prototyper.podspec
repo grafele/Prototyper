@@ -30,5 +30,8 @@ The Prototyper framework allows you to create a mix between app prototypes and r
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'NSHash', '~> 1.0.2'
+  s.dependency 'SSZipArchive', '~> 1.2'
+  s.dependency 'GCDWebServer', '~> 3.0'
 end

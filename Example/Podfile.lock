@@ -1,5 +1,35 @@
 PODS:
-  - Prototyper (0.1.0)
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - GCDWebServer (3.3.2):
+    - GCDWebServer/Core (= 3.3.2)
+  - GCDWebServer/Core (3.3.2)
+  - NSHash (1.0.2)
+  - Prototyper (0.1.0):
+    - AFNetworking (~> 2.3)
+    - GCDWebServer (~> 3.0)
+    - NSHash (~> 1.0.2)
+    - SSZipArchive (~> 1.2)
+  - SSZipArchive (1.2)
 
 DEPENDENCIES:
   - Prototyper (from `../`)
@@ -9,7 +39,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Prototyper: f7c2a9f6a368f6a9162ba8979eb307cbcb2dec95
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  GCDWebServer: 2a375ec42839a41d7187d04e5b688d32fa5c4cd5
+  NSHash: 173d9782d4b7dec17bf32f22d8ab203c88655a04
+  Prototyper: a0bcc5b8224a9a4bdd757c6900927a7eaad4d96b
+  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
 
 PODFILE CHECKSUM: 2dc1f4f5bf584a69d043dc88fa68a698b94bf4bc
 
