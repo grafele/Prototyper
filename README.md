@@ -1,6 +1,6 @@
 # Prototyper
 
-[![CI Status](http://img.shields.io/travis/Stefan Kofler/Prototyper.svg?style=flat)](https://travis-ci.org/Stefan Kofler/Prototyper)
+[![CI Status](http://img.shields.io/travis/grafele/Prototyper.svg?style=flat)](https://travis-ci.org/grafele/Prototyper)
 [![Version](https://img.shields.io/cocoapods/v/Prototyper.svg?style=flat)](http://cocoapods.org/pods/Prototyper)
 [![License](https://img.shields.io/cocoapods/l/Prototyper.svg?style=flat)](http://cocoapods.org/pods/Prototyper)
 [![Platform](https://img.shields.io/cocoapods/p/Prototyper.svg?style=flat)](http://cocoapods.org/pods/Prototyper)
