@@ -7,18 +7,16 @@
 //
 
 import UIKit
+import Prototyper
 
-class ViewController: UIViewController {
-
+class ViewController: PrototypeViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        PrototypeController.sharedInstance.prototypePathForPageId("12469416") { (prototypePath) in
+            self.prototypeAddress = prototypePath
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
+    
 }
-
