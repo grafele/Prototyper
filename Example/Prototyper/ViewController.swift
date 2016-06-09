@@ -13,10 +13,8 @@ class ViewController: PrototypeViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        PrototypeController.sharedInstance.prototypePathForPageId("12469416") { (prototypePath) in
-            self.prototypeAddress = prototypePath
-        }
+                
+        self.loadPrototypePage("12469416")
     }
     
 }

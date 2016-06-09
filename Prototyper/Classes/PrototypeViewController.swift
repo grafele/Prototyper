@@ -30,6 +30,12 @@ public class PrototypeViewController: UIViewController {
         prototypeView.loadContent()
     }
     
+    public func loadPrototypePage(pageId: String) {
+        PrototypeController.sharedInstance.prototypePathForPageId(pageId) { (prototypePath) in
+            self.prototypeAddress = prototypePath
+        }
+    }
+    
     private func createPrototypeView() {
         prototypeView = PrototypeView(frame: self.view.bounds)
         prototypeView.translatesAutoresizingMaskIntoConstraints = false
