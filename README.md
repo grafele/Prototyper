@@ -16,45 +16,54 @@ To use the Prototyper framework you need an account for the [Prototyper online s
 ## Installation
 
 1. Integrate Prototyper Cocoapod
-```swift
-pod 'Prototyper'
-```
+
+    ```swift
+    pod 'Prototyper'
+    ```
+
 2. Add App transport security exception for localhost:
-```xml
-<key>NSAppTransportSecurity</key>
-<dict>
-<key>NSExceptionDomains</key>
-<dict>
-<key>localhost</key>
-<dict>
-<key>NSTemporaryExceptionAllowsInsecureHTTPSLoads</key>
-<false/>           
-<key>NSIncludesSubdomains</key>
-<true/>
-<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-<true/>
-<key>NSTemporaryExceptionMinimumTLSVersion</key>
-<string>1.0</string>
-<key>NSTemporaryExceptionRequiresForwardSecrecy</key>
-<false/>
-</dict>
-</dict>
-</dict>
-```
+
+    ```xml
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>localhost</key>
+            <dict>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPSLoads</key>
+                <false/>           
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                <string>1.0</string>
+                <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+                <false/>
+            </dict>
+        </dict>
+    </dict>
+    ```
+
 3. Add container zip file to project
 4. Create ViewController for every prototype page you want to show and make it a subclass of PrototypeViewController (Don’t forget to import Prototyper module)
-```swift
-import Prototyper
-```
+
+    ```swift
+    import Prototyper
+    ```
+
 5. Load prototype in view controller. In viewDidLoad for example:
-```swift
-self.loadPrototypePage("PAGE_ID")
-```
+
+    ```swift
+    self.loadPrototypePage("PAGE_ID")
+    ```
 
 6. Optional: Preload prototype (e.g. in AppDelegate)
-```swift
-PrototypeController.sharedInstance.preloadPrototypes(nil)
-```
+
+    ```swift
+    PrototypeController.sharedInstance.preloadPrototypes(nil)
+    ```
+
 ## Author
 
 Stefan Kofler, grafele@gmail.com
