@@ -1,6 +1,6 @@
 {
   "name": "Prototyper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "summary": "Framework to mix prototypes and real apps.",
   "description": "The Prototyper framework allows you to create a mix between app prototypes and real apps.",
   "homepage": "https://github.com/grafele/Prototyper",
@@ -12,8 +12,8 @@
     "Stefan Kofler": "grafele@gmail.com"
   },
   "source": {
-    "git": "https://github.com/grafeke/Prototyper.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/grafele/Prototyper.git",
+    "tag": "0.1.1"
   },
   "social_media_url": "https://twitter.com/kofse",
   "platforms": {
@@ -32,6 +32,9 @@
     ],
     "GCDWebServer": [
       "~> 3.0"
+    ],
+    "jot": [
+      "~> 0.1.5"
     ]
   }
 }

@@ -28,6 +28,9 @@ public class PrototypeViewController: UIViewController {
         createPrototypeView()
         prototypeView.prototypeAddress = prototypeAddress
         prototypeView.loadContent()
+        
+        // TODO: Remove
+        showFeedbackController()
     }
     
     public func loadPrototypePage(pageId: String) {
@@ -47,5 +50,18 @@ public class PrototypeViewController: UIViewController {
         let rightConstraint = NSLayoutConstraint(item: prototypeView, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1, constant: 0)
         
         self.view.addConstraints([topConstaint, bottomConstaint, leftConstraint, rightConstraint])
+    }
+    
+    private func showFeedbackController() {
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            let feedbackViewController = FeedbackViewController()
+            
+            let screenshot = UIApplication.sharedApplication().keyWindow?.snaphot()
+            feedbackViewController.screenshot = screenshot
+            
+            let navigationController = UINavigationController(rootViewController: feedbackViewController)
+            self.presentViewController(navigationController, animated: true, completion: nil)
+        }
     }
 }
