@@ -203,8 +203,8 @@
     if (_fitOriginalFontSizeToViewWidth) {
         temporarySizingLabel.numberOfLines = 0;
         insetViewRect = CGRectInset(self.bounds,
-                                           _initialTextInsets.left + _initialTextInsets.right,
-                                           _initialTextInsets.top + _initialTextInsets.bottom);
+                                    _initialTextInsets.left + _initialTextInsets.right,
+                                    _initialTextInsets.top + _initialTextInsets.bottom);
     } else {
         temporarySizingLabel.numberOfLines = 1;
         insetViewRect = CGRectMake(0.f, 0.f, CGFLOAT_MAX, CGFLOAT_MAX);
@@ -332,19 +332,17 @@
 
 - (UIImage *)drawTextImageWithSize:(CGSize)size backgroundImage:(UIImage *)backgroundImage
 {
-    CGFloat scale = size.width / CGRectGetWidth(self.bounds);
+    CGFloat scale = [UIScreen mainScreen].scale;
     
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, scale);
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
     
-    [backgroundImage drawInRect:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+    [backgroundImage drawInRect:CGRectMake(0.f, 0.f, size.width, size.height)];
     
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     UIImage *drawnImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [UIImage imageWithCGImage:drawnImage.CGImage
-                               scale:1.f
-                         orientation:drawnImage.imageOrientation];
+    return drawnImage;
 }
 
 @end

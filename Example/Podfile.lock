@@ -36,11 +36,19 @@ PODS:
   - SSZipArchive (1.2)
 
 DEPENDENCIES:
+  - jot (from `https://github.com/grafele/jot`)
   - Prototyper (from `../`)
 
 EXTERNAL SOURCES:
+  jot:
+    :git: https://github.com/grafele/jot
   Prototyper:
     :path: "../"
+
+CHECKOUT OPTIONS:
+  jot:
+    :commit: 0a28f2502507b888f14898b8813d9f7e64d13aca
+    :git: https://github.com/grafele/jot
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -51,6 +59,6 @@ SPEC CHECKSUMS:
   Prototyper: 3a3f7c583b6b90f6675e611b8304eab648dfdeab
   SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
 
-PODFILE CHECKSUM: 2dc1f4f5bf584a69d043dc88fa68a698b94bf4bc
+PODFILE CHECKSUM: 916dc3a3406d39f7400b0d529bc3511a8212df5d
 
 COCOAPODS: 1.0.1

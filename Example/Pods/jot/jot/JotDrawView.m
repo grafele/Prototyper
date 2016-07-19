@@ -224,19 +224,17 @@ CGFloat const kJotRelativeMinStrokeWidth = 0.4f;
 
 - (UIImage *)drawAllPathsImageWithSize:(CGSize)size backgroundImage:(UIImage *)backgroundImage
 {
-    CGFloat scale = size.width / CGRectGetWidth(self.bounds);
+    CGFloat scale = [UIScreen mainScreen].scale;
     
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, scale);
+    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
     
-    [backgroundImage drawInRect:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+    [backgroundImage drawInRect:CGRectMake(0.f, 0.f, size.width, size.height)];
     
     [self drawAllPaths];
     
     UIImage *drawnImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return [UIImage imageWithCGImage:drawnImage.CGImage
-                               scale:1.f
-                         orientation:drawnImage.imageOrientation];
+    return drawnImage;
 }
 
 - (void)drawAllPaths
