@@ -152,9 +152,29 @@ class FeedbackViewController: UIViewController {
     }
 
     func sendButtonPressed(sender: AnyObject) {
+        guard APIHandler.sharedAPIHandler.isLoggedIn else  {
+            print("You need to make sure you are logged in.")
+            
+            let loginViewController = UIStoryboard(name: "Login", bundle: NSBundle(forClass: LoginViewController.self)).instantiateInitialViewController()!
+            self.presentViewController(loginViewController, animated: true, completion: nil)
+            
+            return
+        }
+        
+        guard let screenshot = screenshot else {
+            print("You need a screenshot set to send screen feedback")
+            return
+        }
+        
         self.navigationItem.rightBarButtonItem?.enabled = false
 
-        // TODO: Send feedback        
+        APIHandler.sharedAPIHandler.sendScreenFeedback(titleTextField.text ?? "", screenshot: screenshot, description: descriptionTextView.text, success: {
+            print("Successfully sent feedback to server")
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        }) { (error) in
+            self.navigationItem.rightBarButtonItem?.enabled = true
+            self.showErrorAlert()
+        }
     }
     
     func imageButtonPressed(sender: AnyObject) {
@@ -164,6 +184,15 @@ class FeedbackViewController: UIViewController {
         
         let navController = UINavigationController(rootViewController: annotationViewController)
         self.presentViewController(navController, animated: true, completion: nil)
+    }
+    
+    // MARK: Helper
+    
+    private func showErrorAlert() {
+        let alertController = UIAlertController(title: "Error", message: "Could not send feedback to server!", preferredStyle: UIAlertControllerStyle.Alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alertController.addAction(defaultAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
 }

@@ -15,8 +15,14 @@ private let defaultBoundary = "------VohpleBoundary4QuqLuM1cE5lMwCy"
 
 class APIHandler {
     let session: NSURLSession
-    var appId: String!
-    var releaseId: String!
+    var appId: String! {
+        return NSBundle.mainBundle().objectForInfoDictionaryKey("PrototyperAppId") as? String
+    }
+    var releaseId: String! {
+        return NSBundle.mainBundle().objectForInfoDictionaryKey("PrototyperReleaseId") as? String
+    }
+    
+    var isLoggedIn: Bool = false
     
     init() {
         let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -45,8 +51,10 @@ class APIHandler {
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: requestURL, bodyData: bodyData)
         executeRequest(request) { (data, response, networkError) in
-            let error = data == nil ? NSError.dataParseError() : networkError
+            let httpURLResponse: NSHTTPURLResponse! = response as? NSHTTPURLResponse
+            let error = (data == nil || httpURLResponse.statusCode != 200) ? NSError.dataParseError() : networkError
             error != nil ? failure(error: error) : success()
+            self.isLoggedIn = error == nil
         }
     }
     
