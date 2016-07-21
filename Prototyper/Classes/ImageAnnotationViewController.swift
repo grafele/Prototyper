@@ -55,14 +55,21 @@ class ImageAnnotationViewController: UIViewController {
         guard jotViewController == nil else { return }
         
         jotViewController = JotViewController()
+        jotViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
         addChildViewController(jotViewController)
         view.addSubview(jotViewController.view)
         jotViewController.didMoveToParentViewController(self)
-        jotViewController.view.frame = imageView.frame
         
         jotViewController.state = JotViewState.Drawing
-        jotViewController.drawingColor = UIColor.cyanColor();
+        jotViewController.drawingColor = UIColor.cyanColor()
+        
+        let leftConstraint = NSLayoutConstraint(item: jotViewController.view, attribute: .Left, relatedBy: .Equal, toItem: imageView, attribute: .Left, multiplier: 1, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: jotViewController.view, attribute: .Right, relatedBy: .Equal, toItem: imageView, attribute: .Right, multiplier: 1, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: jotViewController.view, attribute: .Top, relatedBy: .Equal, toItem: imageView, attribute: .Top, multiplier: 1, constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: jotViewController.view, attribute: .Bottom, relatedBy: .Equal, toItem: imageView, attribute: .Bottom, multiplier: 1, constant: 0)
+        
+        view.addConstraints([leftConstraint, rightConstraint, topConstraint, bottomConstraint])
     }
     
     private func addBarButtonItems() {
