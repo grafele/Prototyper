@@ -193,6 +193,10 @@
 		F2E9945B7494E20ED7DC4720A2B8CDC9 /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A0C79DD300E171F7CC8AC68B652E7CE /* AFNetworkActivityIndicatorManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F360F6055446CD123511D93C8B761198 /* SSZipArchive-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 26BAE5EFDC492CA95D1FF74EBA3F0336 /* SSZipArchive-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5BFE3BFBAA2ECDD0864FED16ECDB598 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E3A33E551B0E6F87B8FA8F2FAE2C80 /* UIKit.framework */; };
+		F64D7ACE1D40C10C00D68473 /* NSError+APIHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64D7ACC1D40C10C00D68473 /* NSError+APIHandler.swift */; };
+		F64D7ACF1D40C10C00D68473 /* APIHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64D7ACD1D40C10C00D68473 /* APIHandler.swift */; };
+		F64D7AD11D40C27500D68473 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64D7AD01D40C27500D68473 /* Constants.swift */; };
+		F64D7AD91D40D17600D68473 /* String+Escape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64D7AD81D40D17600D68473 /* String+Escape.swift */; };
 		F6CE776FA96BBA9D7834B3D816889D41 /* Pods-Prototyper_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 939C51A4D85812FF4B457B659C18C155 /* Pods-Prototyper_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F7BCC0CB8DFB22AB34ECE9BC5C72DD2B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75283E9AC03C2272103801DD3ED85866 /* SystemConfiguration.framework */; };
 		F854FD81B447DE7DE98EFA7B2A5E506B /* GCDWebServerDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BC6CB41614A9434122CE606938434AA /* GCDWebServerDataResponse.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -530,6 +534,10 @@
 		F2DF3E7EDFB67397242F196273B258AC /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
 		F5345185723792BB4FCF889FA1EE7AE3 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		F62538782EE1E4A19BC00A18D859E36C /* Pods-Prototyper_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Prototyper_Tests-umbrella.h"; sourceTree = "<group>"; };
+		F64D7ACC1D40C10C00D68473 /* NSError+APIHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+APIHandler.swift"; sourceTree = "<group>"; };
+		F64D7ACD1D40C10C00D68473 /* APIHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIHandler.swift; sourceTree = "<group>"; };
+		F64D7AD01D40C27500D68473 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F64D7AD81D40D17600D68473 /* String+Escape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Escape.swift"; sourceTree = "<group>"; };
 		F79E143A8BF6957366E0AC151BF0488D /* MASUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASUtilities.h; path = Masonry/MASUtilities.h; sourceTree = "<group>"; };
 		F852F5AD010ED5D896BCFAAA5912B185 /* UIAlertView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+AFNetworking.h"; path = "UIKit+AFNetworking/UIAlertView+AFNetworking.h"; sourceTree = "<group>"; };
 		F95F28E8447CF83998F82EF9F04932CF /* Pods-Prototyper_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Prototyper_Example-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -1038,12 +1046,11 @@
 		AB62DC1BA28502FEEA44581AC8DD99AD /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4C269FDA5FD45C86D7D23B8D385C6B35 /* FeedbackViewController.swift */,
-				780FC341518545D2A854A113416869B2 /* ImageAnnotationViewController.swift */,
-				32B7BC8722C42E2E887016823398C93A /* PrototypeController.swift */,
-				494F6C595760CBA6AD6C1FD3C4D339C9 /* PrototypeView.swift */,
-				13226A537BC37A8C52DC522BD1701B83 /* PrototypeViewController.swift */,
-				71E250AE9E38421721A1A72A633EA52B /* UIWindow+Snaphot.swift */,
+				F64D7AD21D40C70D00D68473 /* API */,
+				F64D7AD61D40C73B00D68473 /* Feedback Controller */,
+				F64D7AD51D40C72C00D68473 /* Prototype Controller */,
+				F64D7AD31D40C71C00D68473 /* Helpers */,
+				F64D7AD41D40C72400D68473 /* Constants */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1117,6 +1124,51 @@
 			);
 			name = "Pods-Prototyper_Tests";
 			path = "Target Support Files/Pods-Prototyper_Tests";
+			sourceTree = "<group>";
+		};
+		F64D7AD21D40C70D00D68473 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				F64D7ACC1D40C10C00D68473 /* NSError+APIHandler.swift */,
+				F64D7ACD1D40C10C00D68473 /* APIHandler.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		F64D7AD31D40C71C00D68473 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				71E250AE9E38421721A1A72A633EA52B /* UIWindow+Snaphot.swift */,
+				F64D7AD81D40D17600D68473 /* String+Escape.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		F64D7AD41D40C72400D68473 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				F64D7AD01D40C27500D68473 /* Constants.swift */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		F64D7AD51D40C72C00D68473 /* Prototype Controller */ = {
+			isa = PBXGroup;
+			children = (
+				32B7BC8722C42E2E887016823398C93A /* PrototypeController.swift */,
+				494F6C595760CBA6AD6C1FD3C4D339C9 /* PrototypeView.swift */,
+				13226A537BC37A8C52DC522BD1701B83 /* PrototypeViewController.swift */,
+			);
+			name = "Prototype Controller";
+			sourceTree = "<group>";
+		};
+		F64D7AD61D40C73B00D68473 /* Feedback Controller */ = {
+			isa = PBXGroup;
+			children = (
+				4C269FDA5FD45C86D7D23B8D385C6B35 /* FeedbackViewController.swift */,
+				780FC341518545D2A854A113416869B2 /* ImageAnnotationViewController.swift */,
+			);
+			name = "Feedback Controller";
 			sourceTree = "<group>";
 		};
 		FED945FD05CAD9F0F67E6365791D54DB /* Support Files */ = {
@@ -1594,10 +1646,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3A0163F996EA5683BC361B338A387A9 /* FeedbackViewController.swift in Sources */,
+				F64D7ACE1D40C10C00D68473 /* NSError+APIHandler.swift in Sources */,
 				3DCA377A20BADCB7604F61BE10A99F0E /* ImageAnnotationViewController.swift in Sources */,
+				F64D7AD91D40D17600D68473 /* String+Escape.swift in Sources */,
 				D449673606AED5710AD2C3C5C87C7979 /* PrototypeController.swift in Sources */,
 				A6107391228B529706A0266F504FF5B6 /* Prototyper-dummy.m in Sources */,
+				F64D7AD11D40C27500D68473 /* Constants.swift in Sources */,
 				72F10B35CB1A3543FB0B76DCB973F44A /* PrototypeView.swift in Sources */,
+				F64D7ACF1D40C10C00D68473 /* APIHandler.swift in Sources */,
 				4F20439A35AE2054FBA3A228DA8854A6 /* PrototypeViewController.swift in Sources */,
 				22E078B5EF6CF4C0E361126740811B69 /* UIWindow+Snaphot.swift in Sources */,
 			);
@@ -2072,6 +2128,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9C819DD34B0761A9D940BFE67027C8F /* AFNetworking.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2091,6 +2148,7 @@
 				PRODUCT_NAME = AFNetworking;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2130,6 +2188,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9C819DD34B0761A9D940BFE67027C8F /* AFNetworking.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
