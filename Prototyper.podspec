@@ -23,7 +23,8 @@ The Prototyper framework allows you to create a mix between app prototypes and r
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Prototyper/Classes/**/*'
-  
+  s.resources = 'Prototyper/Assets/*' 
+ 
   # s.resource_bundles = {
   #   'Prototyper' => ['Prototyper/Assets/*.png']
   # }
@@ -34,4 +35,5 @@ The Prototyper framework allows you to create a mix between app prototypes and r
   s.dependency 'NSHash', '~> 1.0.2'
   s.dependency 'SSZipArchive', '~> 1.2'
   s.dependency 'GCDWebServer', '~> 3.0'
+  s.dependency 'jot', '~> 0.1.5'
 end

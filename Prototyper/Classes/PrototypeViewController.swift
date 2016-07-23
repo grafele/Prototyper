@@ -18,7 +18,14 @@ public class PrototypeViewController: UIViewController {
         }
     }
     
+    public var enableForceTouchToFeedback: Bool = true {
+        didSet {
+            addTouchRecognizer()
+        }
+    }
+    
     private var prototypeView: PrototypeView!
+    private var touchRecognizer: UIGestureRecognizer!
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +35,8 @@ public class PrototypeViewController: UIViewController {
         createPrototypeView()
         prototypeView.prototypeAddress = prototypeAddress
         prototypeView.loadContent()
+        
+        addTouchRecognizer()
     }
     
     public func loadPrototypePage(pageId: String) {
@@ -48,4 +57,45 @@ public class PrototypeViewController: UIViewController {
         
         self.view.addConstraints([topConstaint, bottomConstaint, leftConstraint, rightConstraint])
     }
+    
+    private func addTouchRecognizer() {
+        defer { touchRecognizer.enabled = enableForceTouchToFeedback }
+        guard touchRecognizer == nil else { return }
+        
+        if #available(iOS 9.0, *) {
+            if self.view.traitCollection.forceTouchCapability == .Available {
+                let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(showFeedbackView), threshold: 0.8)
+                deepPressGestureRecognizer.vibrateOnDeepPress = true
+                deepPressGestureRecognizer.delegate = self
+                touchRecognizer = deepPressGestureRecognizer
+                
+                self.view.addGestureRecognizer(deepPressGestureRecognizer)
+                return
+            }
+        }
+        
+        touchRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(showFeedbackView))
+        touchRecognizer.delegate = self
+        self.view.addGestureRecognizer(touchRecognizer)
+    }
+    
+    // MARK: Actions
+    
+    public func showFeedbackView() {
+        guard presentingViewController == nil else { return }
+        
+        let feedbackViewController = FeedbackViewController()
+        
+        let screenshot = UIApplication.sharedApplication().keyWindow?.snaphot()
+        feedbackViewController.screenshot = screenshot
+        
+        let navigationController = UINavigationController(rootViewController: feedbackViewController)
+        self.presentViewController(navigationController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension PrototypeViewController: UIGestureRecognizerDelegate {
+    
 }

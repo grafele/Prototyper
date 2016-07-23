@@ -55,6 +55,8 @@ public class PrototypeController: NSObject {
         
         self.completionHandler = completionHandler
         
+        GCDWebServer.setLogLevel(3)
+
         PrototypeController.webServer = GCDWebServer()
         PrototypeController.webServer.delegate = self
         PrototypeController.webServer.addGETHandlerForBasePath("/", directoryPath: directoryPath, indexFilename: "index.html", cacheAge: 0, allowRangeRequests: true)
