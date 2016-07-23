@@ -23,7 +23,8 @@ The Prototyper framework allows you to create a mix between app prototypes and r
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Prototyper/Classes/**/*'
-  
+  s.resources = 'Prototyper/Assets/*' 
+ 
   # s.resource_bundles = {
   #   'Prototyper' => ['Prototyper/Assets/*.png']
   # }
