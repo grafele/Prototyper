@@ -26,6 +26,7 @@ public class PrototypeViewController: UIViewController {
     
     private var prototypeView: PrototypeView!
     private var touchRecognizer: UIGestureRecognizer!
+    private var currentlyPresenting: Bool = false
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +84,9 @@ public class PrototypeViewController: UIViewController {
     
     public func showFeedbackView() {
         guard presentingViewController == nil else { return }
+        guard !currentlyPresenting else { return }
+        
+        currentlyPresenting = true
         
         let feedbackViewController = FeedbackViewController()
         
@@ -90,12 +94,16 @@ public class PrototypeViewController: UIViewController {
         feedbackViewController.screenshot = screenshot
         
         let navigationController = UINavigationController(rootViewController: feedbackViewController)
-        self.presentViewController(navigationController, animated: true, completion: nil)
+        self.presentViewController(navigationController, animated: true) {
+            self.currentlyPresenting = false
+        }
     }
 }
 
 // MARK: - UIGestureRecognizerDelegate
 
 extension PrototypeViewController: UIGestureRecognizerDelegate {
-    
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }

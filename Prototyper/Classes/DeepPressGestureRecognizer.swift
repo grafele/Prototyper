@@ -20,63 +20,80 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     private let pulse = PulseLayer()
     private var deepPressed: Bool = false
     
-    required init(target: AnyObject?, action: Selector, threshold: CGFloat) {
+    required init(target: AnyObject?, action: Selector, threshold: CGFloat)
+    {
         self.threshold = threshold
         
         super.init(target: target, action: action)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesBegan(touches, withEvent: event)
-        
-        if let touch = touches.first {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent)
+    {
+        if let touch = touches.first
+        {
             handleTouch(touch)
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesBegan(touches, withEvent: event)
-        
-        if let touch = touches.first {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent)
+    {
+        if let touch = touches.first
+        {
             handleTouch(touch)
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent)
+    {
         super.touchesEnded(touches, withEvent: event)
+        
+        state = deepPressed ? UIGestureRecognizerState.Ended : UIGestureRecognizerState.Failed
         
         deepPressed = false
     }
     
-    private func handleTouch(touch: UITouch) {
+    private func handleTouch(touch: UITouch)
+    {
         if #available(iOS 9.0, *) {
-            guard let view = view where touch.force != 0 && touch.maximumPossibleForce != 0 else {
+            guard let view = view where touch.force != 0 && touch.maximumPossibleForce != 0 else
+            {
                 return
             }
-
-            if !deepPressed && (touch.force / touch.maximumPossibleForce) >= threshold {
-                view.layer.addSublayer(pulse)
-                pulse.pulse(CGRect(origin: CGPointZero, size: view.frame.size))
-
-                state = UIGestureRecognizerState.Ended
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        if #available(iOS 9.0, *) {
+            if !deepPressed && (touch.force / touch.maximumPossibleForce) >= threshold
+            {
+                view!.layer.addSublayer(pulse)
+                pulse.pulse(CGRect(origin: CGPointZero, size: view!.frame.size))
                 
-                if vibrateOnDeepPress {
+                state = UIGestureRecognizerState.Began
+                
+                if vibrateOnDeepPress
+                {
                     AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
                 }
                 
                 deepPressed = true
-            } else if deepPressed && (touch.force / touch.maximumPossibleForce) < threshold {
-                state = UIGestureRecognizerState.Cancelled
+            }
+            else if deepPressed && (touch.force / touch.maximumPossibleForce) < threshold
+            {
+                state = UIGestureRecognizerState.Ended
                 
                 deepPressed = false
             }
+        } else {
+            // Fallback on earlier versions
         }
     }
 }
 
 // MARK: DeepPressable protocol extension
 
-protocol DeepPressable {
+protocol DeepPressable
+{
     var gestureRecognizers: [UIGestureRecognizer]? {get set}
     
     func addGestureRecognizer(gestureRecognizer: UIGestureRecognizer)
@@ -86,19 +103,24 @@ protocol DeepPressable {
     func removeDeepPressAction()
 }
 
-extension DeepPressable {
-    func setDeepPressAction(target: AnyObject, action: Selector) {
+extension DeepPressable
+{
+    func setDeepPressAction(target: AnyObject, action: Selector)
+    {
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: target, action: action, threshold: 0.75)
         
         self.addGestureRecognizer(deepPressGestureRecognizer)
     }
     
-    func removeDeepPressAction() {
-        guard let gestureRecognizers = gestureRecognizers else {
+    func removeDeepPressAction()
+    {
+        guard let gestureRecognizers = gestureRecognizers else
+        {
             return
         }
         
-        for recogniser in gestureRecognizers where recogniser is DeepPressGestureRecognizer {
+        for recogniser in gestureRecognizers where recogniser is DeepPressGestureRecognizer
+        {
             removeGestureRecognizer(recogniser)
         }
     }
@@ -108,7 +130,8 @@ extension DeepPressable {
 
 // Thanks to http://jamesonquave.com/blog/fun-with-cashapelayer/
 
-class PulseLayer: CAShapeLayer {
+class PulseLayer: CAShapeLayer
+{
     var pulseColor: CGColorRef = UIColor.redColor().CGColor
     
     func pulse(frame: CGRect)
@@ -134,8 +157,8 @@ class PulseLayer: CAShapeLayer {
         CATransaction.begin()
         
         CATransaction.setCompletionBlock
-        {
-            self.removeFromSuperlayer()
+            {
+                self.removeFromSuperlayer()
         }
         
         for animation in [pathAnimation, opacityAnimation, lineWidthAnimation]
