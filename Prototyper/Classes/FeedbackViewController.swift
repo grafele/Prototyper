@@ -11,6 +11,7 @@ import UIKit
 class FeedbackViewController: UIViewController {
     
     static let ImageAnnotationControllerSegueIdentifier = "showAnnotationScreen"
+    static let DescriptionTextViewPlaceholder = "Add some description here..."
     
     var screenshot: UIImage?
     var url: NSURL?
@@ -92,6 +93,9 @@ class FeedbackViewController: UIViewController {
         descriptionTextView.textContainerInset = UIEdgeInsetsZero
         descriptionTextView.contentInset = UIEdgeInsetsZero
         descriptionTextView.font = UIFont.systemFontOfSize(14)
+        descriptionTextView.text = FeedbackViewController.DescriptionTextViewPlaceholder
+        descriptionTextView.textColor = UIColor.lightGrayColor()
+        descriptionTextView.delegate = self
         view.addSubview(descriptionTextView)
         
         let metrics = ["sideSpacing": 3, "topSpacing": 5]
@@ -200,5 +204,23 @@ class FeedbackViewController: UIViewController {
 extension FeedbackViewController: ImageAnnotationViewControllerDelegate {
     func imageAnnotated(image: UIImage) {
         self.screenshot = image
+    }
+}
+
+extension FeedbackViewController: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == FeedbackViewController.DescriptionTextViewPlaceholder {
+            textView.text = ""
+            textView.textColor = UIColor.blackColor()
+        }
+        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = FeedbackViewController.DescriptionTextViewPlaceholder
+            textView.textColor = UIColor.lightGrayColor()
+            textView.resignFirstResponder()
+        }
     }
 }
