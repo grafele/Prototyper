@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import KeychainSwift
 
 class LoginViewController: UIViewController {
+    
+    static let UsernameKey = "UsernameKey"
+    static let PasswordKey = "PasswordKey"
     
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var emailField: UITextField!
@@ -58,6 +62,10 @@ class LoginViewController: UIViewController {
         let password = passwordField.text ?? ""
 
         APIHandler.sharedAPIHandler.login(email, password: password, success: {
+            let keychain = KeychainSwift()
+            keychain.set(email, forKey: LoginViewController.UsernameKey)
+            keychain.set(password, forKey: LoginViewController.PasswordKey)
+
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }) { (error) in
             self.showErrorAlert()

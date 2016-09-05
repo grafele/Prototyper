@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KeychainSwift
 
 class FeedbackViewController: UIViewController {
     
@@ -159,8 +160,20 @@ class FeedbackViewController: UIViewController {
         guard APIHandler.sharedAPIHandler.isLoggedIn else  {
             print("You need to make sure you are logged in.")
             
-            let loginViewController = UIStoryboard(name: "Login", bundle: NSBundle(forClass: LoginViewController.self)).instantiateInitialViewController()!
-            self.presentViewController(loginViewController, animated: true, completion: nil)
+            let keychain = KeychainSwift()
+            let oldUsername = keychain.get(LoginViewController.UsernameKey)
+            let oldPassword = keychain.get(LoginViewController.PasswordKey)
+            
+            if let oldUsername = oldUsername, let oldPassword = oldPassword {
+                APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {
+                    self.sendButtonPressed(self)
+                }) { (error) in
+                    self.showLoginView()
+                }
+            } else {
+                showLoginView()
+            }
+            
             
             return
         }
@@ -199,6 +212,11 @@ class FeedbackViewController: UIViewController {
         let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
         alertController.addAction(defaultAction)
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    private func showLoginView() {
+        let loginViewController = UIStoryboard(name: "Login", bundle: NSBundle(forClass: LoginViewController.self)).instantiateInitialViewController()!
+        self.presentViewController(loginViewController, animated: true, completion: nil)
     }
     
 }

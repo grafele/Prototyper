@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Prototyper'
-  s.version          = '0.2'
+  s.version          = '0.3'
   s.summary          = 'Framework to mix prototypes and real apps.'
 
 # This description is used to generate tags and improve search results.
@@ -36,4 +36,6 @@ The Prototyper framework allows you to create a mix between app prototypes and r
   s.dependency 'SSZipArchive', '~> 1.2'
   s.dependency 'GCDWebServer', '~> 3.0'
   s.dependency 'jot', '~> 0.1.5'
+  s.dependency 'KeychainSwift', '~> 3.0'
+
 end

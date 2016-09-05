@@ -20,20 +20,22 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - GCDWebServer (3.3.2):
-    - GCDWebServer/Core (= 3.3.2)
-  - GCDWebServer/Core (3.3.2)
+  - GCDWebServer (3.3.3):
+    - GCDWebServer/Core (= 3.3.3)
+  - GCDWebServer/Core (3.3.3)
   - jot (0.1.5):
     - Masonry (~> 0.6.1)
+  - KeychainSwift (3.0.16)
   - Masonry (0.6.4)
   - NSHash (1.0.2)
-  - Prototyper (0.1.1):
+  - Prototyper (0.3):
     - AFNetworking (~> 2.3)
     - GCDWebServer (~> 3.0)
     - jot (~> 0.1.5)
+    - KeychainSwift (~> 3.0)
     - NSHash (~> 1.0.2)
     - SSZipArchive (~> 1.2)
-  - SSZipArchive (1.2)
+  - SSZipArchive (1.5)
 
 DEPENDENCIES:
   - jot (from `https://github.com/grafele/jot`)
@@ -52,12 +54,13 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  GCDWebServer: 2a375ec42839a41d7187d04e5b688d32fa5c4cd5
+  GCDWebServer: 1c39a1f0763e4eb492bee021e4270fce097d3555
   jot: 0f5dc333defa6ad805d01adc3834b201c22510a7
+  KeychainSwift: a5bb85cd498ce2217b55e055ec59e9268d83384c
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
   NSHash: 173d9782d4b7dec17bf32f22d8ab203c88655a04
-  Prototyper: 3a3f7c583b6b90f6675e611b8304eab648dfdeab
-  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
+  Prototyper: 34a3456191842e06fc4339641447a4fac3eb303f
+  SSZipArchive: 29daace2bccb90a47de2837744da397728ff9207
 
 PODFILE CHECKSUM: 916dc3a3406d39f7400b0d529bc3511a8212df5d
 
