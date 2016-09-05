@@ -228,7 +228,7 @@ extension FeedbackViewController: ImageAnnotationViewControllerDelegate {
 }
 
 extension FeedbackViewController: UITextViewDelegate {
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
         if textView.text == FeedbackViewController.DescriptionTextViewPlaceholder {
             textView.text = ""
             textView.textColor = UIColor.blackColor()
@@ -236,7 +236,7 @@ extension FeedbackViewController: UITextViewDelegate {
         return true
     }
     
-    func textViewDidChange(_ textView: UITextView) {
+    func textViewDidChange(textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = FeedbackViewController.DescriptionTextViewPlaceholder
             textView.textColor = UIColor.lightGrayColor()
