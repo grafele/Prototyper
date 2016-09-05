@@ -171,8 +171,10 @@ class FeedbackViewController: UIViewController {
         }
         
         self.navigationItem.rightBarButtonItem?.enabled = false
+        
+        let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
 
-        APIHandler.sharedAPIHandler.sendScreenFeedback(titleTextField.text ?? "", screenshot: screenshot, description: descriptionTextView.text, success: {
+        APIHandler.sharedAPIHandler.sendScreenFeedback(titleTextField.text ?? "", screenshot: screenshot, description: descriptionText, success: {
             print("Successfully sent feedback to server")
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }) { (error) in
