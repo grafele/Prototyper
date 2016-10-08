@@ -1,6 +1,6 @@
 {
   "name": "Prototyper",
-  "version": "0.3",
+  "version": "0.4",
   "summary": "Framework to mix prototypes and real apps.",
   "description": "The Prototyper framework allows you to create a mix between app prototypes and real apps.",
   "homepage": "https://github.com/grafele/Prototyper",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/grafele/Prototyper.git",
-    "tag": "0.3"
+    "tag": "0.4"
   },
   "social_media_url": "https://twitter.com/kofse",
   "platforms": {
@@ -23,22 +23,22 @@
   "resources": "Prototyper/Assets/*",
   "dependencies": {
     "AFNetworking": [
-      "~> 2.3"
+      "~> 3.1"
     ],
     "NSHash": [
-      "~> 1.0.2"
+      "~> 1.1"
     ],
     "SSZipArchive": [
-      "~> 1.2"
+      "~> 1.6"
     ],
     "GCDWebServer": [
-      "~> 3.0"
+      "~> 3.3"
     ],
     "jot": [
       "~> 0.1.5"
     ],
     "KeychainSwift": [
-      "~> 3.0"
+      "~> 7.0"
     ]
   }
 }

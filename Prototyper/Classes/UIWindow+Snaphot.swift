@@ -10,9 +10,9 @@ import UIKit
 
 extension UIWindow {
     func snaphot() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.mainScreen().scale);
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale);
         
-        self.drawViewHierarchyInRect(self.bounds, afterScreenUpdates: true)
+        self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
         
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();

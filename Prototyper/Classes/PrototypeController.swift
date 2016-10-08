@@ -11,17 +11,17 @@ import NSHash
 import SSZipArchive
 import GCDWebServer
 
-public class PrototypeController: NSObject {
-    public static let sharedInstance = PrototypeController()
-    private static var webServer: GCDWebServer!
+open class PrototypeController: NSObject {
+    open static let sharedInstance = PrototypeController()
+    fileprivate static var webServer: GCDWebServer!
 
-    private static let PrototypeControllerMD5HashKey = "PrototypeControllerMD5HashKey"
+    fileprivate static let PrototypeControllerMD5HashKey = "PrototypeControllerMD5HashKey"
     
-    private var completionHandler: (Void -> Void)?
+    fileprivate var completionHandler: ((Void) -> Void)?
     
-    public func preloadPrototypes(completionHandler: ((Void) -> Void)?) {
-        let containerPath = NSBundle.mainBundle().pathForResource("container", ofType: "zip")!
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+    open func preloadPrototypes(_ completionHandler: ((Void) -> Void)?) {
+        let containerPath = Bundle.main.path(forResource: "container", ofType: "zip")!
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         
         unzipContainerIfNecessary(containerPath, documentsPath: documentsPath)
         startWebServerForPath(documentsPath) {
@@ -29,25 +29,25 @@ public class PrototypeController: NSObject {
         }
     }
     
-    public func prototypePathForPageId(pageId: String, completionHandler: (prototypePath: String) -> Void) {
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+    open func prototypePathForPageId(_ pageId: String, completionHandler: @escaping (_ prototypePath: String) -> Void) {
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         preloadPrototypes {
-            completionHandler(prototypePath: "\(self.prototypePathInDirectory(documentsPath))?exp=1#\(pageId)")
+            completionHandler("\(self.prototypePathInDirectory(documentsPath) ?? "")?exp=1#\(pageId)")
         }
     }
     
-    private func unzipContainerIfNecessary(containerPath: String, documentsPath: String) {
-        guard let data = NSData(contentsOfFile: containerPath) else { return }
+    fileprivate func unzipContainerIfNecessary(_ containerPath: String, documentsPath: String) {
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: containerPath)) else { return }
    
-        let md5String = data.MD5().description
-        let oldMD5String = NSUserDefaults.standardUserDefaults().stringForKey(PrototypeController.PrototypeControllerMD5HashKey)
+        let md5String = (data as NSData).md5().description
+        let oldMD5String = UserDefaults.standard.string(forKey: PrototypeController.PrototypeControllerMD5HashKey)
         if oldMD5String == nil || md5String != oldMD5String! {
-            SSZipArchive.unzipFileAtPath(containerPath, toDestination: documentsPath)
-            NSUserDefaults.standardUserDefaults().setObject(md5String, forKey: PrototypeController.PrototypeControllerMD5HashKey)
+            SSZipArchive.unzipFile(atPath: containerPath, toDestination: documentsPath)
+            UserDefaults.standard.set(md5String, forKey: PrototypeController.PrototypeControllerMD5HashKey)
         }
     }
 
-    private func startWebServerForPath(directoryPath: String, completionHandler: (Void) -> Void) {
+    fileprivate func startWebServerForPath(_ directoryPath: String, completionHandler: @escaping (Void) -> Void) {
         guard PrototypeController.webServer == nil else {
             completionHandler()
             return
@@ -59,15 +59,15 @@ public class PrototypeController: NSObject {
 
         PrototypeController.webServer = GCDWebServer()
         PrototypeController.webServer.delegate = self
-        PrototypeController.webServer.addGETHandlerForBasePath("/", directoryPath: directoryPath, indexFilename: "index.html", cacheAge: 0, allowRangeRequests: true)
-        PrototypeController.webServer.startWithPort(8080, bonjourName: "Bonjour")
+        PrototypeController.webServer.addGETHandler(forBasePath: "/", directoryPath: directoryPath, indexFilename: "index.html", cacheAge: 0, allowRangeRequests: true)
+        PrototypeController.webServer.start(withPort: 8080, bonjourName: "Bonjour")
     }
     
-    private func prototypePathInDirectory(directoryPath: String) -> String! {
-        let contents = try? NSFileManager.defaultManager().contentsOfDirectoryAtPath(directoryPath)
+    fileprivate func prototypePathInDirectory(_ directoryPath: String) -> String? {
+        let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return nil }
         
-        for filename in filenames where NSNumberFormatter().numberFromString(filename) != nil {
+        for filename in filenames where NumberFormatter().number(from: filename) != nil {
             return "http://localhost:8080/\(filename)/marvelapp.com/index.html"
         }
         
@@ -78,7 +78,7 @@ public class PrototypeController: NSObject {
 // MARK: - GCDWebServerDelegate
 
 extension PrototypeController: GCDWebServerDelegate {
-    public func webServerDidStart(server: GCDWebServer!) {
+    public func webServerDidStart(_ server: GCDWebServer!) {
         self.completionHandler?()
     }
 }

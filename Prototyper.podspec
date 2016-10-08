@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Prototyper'
-  s.version          = '0.3'
+  s.version          = '0.4'
   s.summary          = 'Framework to mix prototypes and real apps.'
 
 # This description is used to generate tags and improve search results.
@@ -31,11 +31,11 @@ The Prototyper framework allows you to create a mix between app prototypes and r
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'AFNetworking', '~> 2.3'
-  s.dependency 'NSHash', '~> 1.0.2'
-  s.dependency 'SSZipArchive', '~> 1.2'
-  s.dependency 'GCDWebServer', '~> 3.0'
+  s.dependency 'AFNetworking', '~> 3.1'
+  s.dependency 'NSHash', '~> 1.1'
+  s.dependency 'SSZipArchive', '~> 1.6'
+  s.dependency 'GCDWebServer', '~> 3.3'
   s.dependency 'jot', '~> 0.1.5'
-  s.dependency 'KeychainSwift', '~> 3.0'
+  s.dependency 'KeychainSwift', '~> 7.0'
 
 end

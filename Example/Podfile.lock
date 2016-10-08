@@ -1,41 +1,35 @@
 PODS:
-  - AFNetworking (2.6.3):
-    - AFNetworking/NSURLConnection (= 2.6.3)
-    - AFNetworking/NSURLSession (= 2.6.3)
-    - AFNetworking/Reachability (= 2.6.3)
-    - AFNetworking/Security (= 2.6.3)
-    - AFNetworking/Serialization (= 2.6.3)
-    - AFNetworking/UIKit (= 2.6.3)
-  - AFNetworking/NSURLConnection (2.6.3):
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.3):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.3)
-  - AFNetworking/Security (2.6.3)
-  - AFNetworking/Serialization (2.6.3)
-  - AFNetworking/UIKit (2.6.3):
-    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - GCDWebServer (3.3.3):
     - GCDWebServer/Core (= 3.3.3)
   - GCDWebServer/Core (3.3.3)
   - jot (0.1.5):
     - Masonry (~> 0.6.1)
-  - KeychainSwift (3.0.16)
+  - KeychainSwift (7.0.0)
   - Masonry (0.6.4)
-  - NSHash (1.0.2)
-  - Prototyper (0.3):
-    - AFNetworking (~> 2.3)
-    - GCDWebServer (~> 3.0)
+  - NSHash (1.1.0)
+  - Prototyper (0.4):
+    - AFNetworking (~> 3.1)
+    - GCDWebServer (~> 3.3)
     - jot (~> 0.1.5)
-    - KeychainSwift (~> 3.0)
-    - NSHash (~> 1.0.2)
-    - SSZipArchive (~> 1.2)
-  - SSZipArchive (1.5)
+    - KeychainSwift (~> 7.0)
+    - NSHash (~> 1.1)
+    - SSZipArchive (~> 1.6)
+  - SSZipArchive (1.6.2)
 
 DEPENDENCIES:
   - jot (from `https://github.com/grafele/jot`)
@@ -53,15 +47,15 @@ CHECKOUT OPTIONS:
     :git: https://github.com/grafele/jot
 
 SPEC CHECKSUMS:
-  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   GCDWebServer: 1c39a1f0763e4eb492bee021e4270fce097d3555
   jot: 0f5dc333defa6ad805d01adc3834b201c22510a7
-  KeychainSwift: a5bb85cd498ce2217b55e055ec59e9268d83384c
+  KeychainSwift: b6947435dd78cc442c64a84ae648dd0e871cf448
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
-  NSHash: 173d9782d4b7dec17bf32f22d8ab203c88655a04
-  Prototyper: 34a3456191842e06fc4339641447a4fac3eb303f
-  SSZipArchive: 29daace2bccb90a47de2837744da397728ff9207
+  NSHash: 61d598c6d48957c5557f1eef0aeafd6ef5ec5fb7
+  Prototyper: 4bddb7334bd6b5f0f399ebc0115483e28a15c2e1
+  SSZipArchive: 428eb1ac8d37dd133404d30f422b23958c1f9acc
 
-PODFILE CHECKSUM: 916dc3a3406d39f7400b0d529bc3511a8212df5d
+PODFILE CHECKSUM: 922dfdc6ca1b4b9b49b648e50a9a65e8eb848e15
 
 COCOAPODS: 1.0.1

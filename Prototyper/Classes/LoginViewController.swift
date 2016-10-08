@@ -14,9 +14,9 @@ class LoginViewController: UIViewController {
     static let UsernameKey = "UsernameKey"
     static let PasswordKey = "PasswordKey"
     
-    @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var emailField: UITextField!
-    @IBOutlet private weak var passwordField: UITextField!
+    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+    @IBOutlet fileprivate weak var emailField: UITextField!
+    @IBOutlet fileprivate weak var passwordField: UITextField!
     
     @IBOutlet weak var loginButton: UIButton!
     
@@ -30,34 +30,34 @@ class LoginViewController: UIViewController {
         addObservers()
     }
     
-    private func addBarButtonItems() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancelButtonPressed))
+    fileprivate func addBarButtonItems() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonPressed))
     }
     
-    private func configureLoginButton() {
+    fileprivate func configureLoginButton() {
         loginButton.layer.cornerRadius = 8.0
-        loginButton.enabled = false
+        loginButton.isEnabled = false
     }
     
-    private func addObservers() {
-        emailField.addTarget(self, action: #selector(validateTextFields), forControlEvents: .EditingChanged)
-        passwordField.addTarget(self, action: #selector(validateTextFields), forControlEvents: .EditingChanged)
+    fileprivate func addObservers() {
+        emailField.addTarget(self, action: #selector(validateTextFields), for: .editingChanged)
+        passwordField.addTarget(self, action: #selector(validateTextFields), for: .editingChanged)
     }
     
     // MARK: Actions
     
     func cancelButtonPressed() {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func validateTextFields() {
         let email = emailField.text ?? ""
         let password = passwordField.text ?? ""
         
-        loginButton.enabled = !email.isEmpty && !password.isEmpty
+        loginButton.isEnabled = !email.isEmpty && !password.isEmpty
     }
     
-    @IBAction func loginButtonPressed(sender: AnyObject) {
+    @IBAction func loginButtonPressed(_ sender: AnyObject) {
         let email = emailField.text ?? ""
         let password = passwordField.text ?? ""
 
@@ -66,7 +66,7 @@ class LoginViewController: UIViewController {
             keychain.set(email, forKey: LoginViewController.UsernameKey)
             keychain.set(password, forKey: LoginViewController.PasswordKey)
 
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
         }) { (error) in
             self.showErrorAlert()
         }
@@ -74,10 +74,10 @@ class LoginViewController: UIViewController {
     
     // MARK: Helper
     
-    private func showErrorAlert() {
-        let alertController = UIAlertController(title: "Error", message: "Could not log in! Please check your login credentials and try again.", preferredStyle: UIAlertControllerStyle.Alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    fileprivate func showErrorAlert() {
+        let alertController = UIAlertController(title: "Error", message: "Could not log in! Please check your login credentials and try again.", preferredStyle: UIAlertControllerStyle.alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }

@@ -14,19 +14,19 @@ let sharedInstance = APIHandler()
 private let defaultBoundary = "------VohpleBoundary4QuqLuM1cE5lMwCy"
 
 class APIHandler {
-    let session: NSURLSession
+    let session: URLSession
     var appId: String! {
-        return NSBundle.mainBundle().objectForInfoDictionaryKey("PrototyperAppId") as? String
+        return Bundle.main.object(forInfoDictionaryKey: "PrototyperAppId") as? String
     }
     var releaseId: String! {
-        return NSBundle.mainBundle().objectForInfoDictionaryKey("PrototyperReleaseId") as? String
+        return Bundle.main.object(forInfoDictionaryKey: "PrototyperReleaseId") as? String
     }
     
     var isLoggedIn: Bool = false
     
     init() {
-        let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-        session = NSURLSession(configuration: sessionConfig)
+        let sessionConfig = URLSessionConfiguration.default
+        session = URLSession(configuration: sessionConfig)
     }
     
     class var sharedAPIHandler: APIHandler {
@@ -35,45 +35,45 @@ class APIHandler {
     
     // MARK: API Methods
     
-    func login(email: String, password: String,  success: (Void) -> Void, failure: (error : NSError!) -> Void) {
+    func login(_ email: String, password: String,  success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         let params = postParamsForLogin(email: email, password: password)
-        let articlesURL = NSURL(string: API.EndPoints.Login, relativeToURL: API.BaseURL)
+        let articlesURL = URL(string: API.EndPoints.Login, relativeTo: API.BaseURL as URL?)
         
         guard let requestURL = articlesURL else {
-            failure(error: NSError.APIURLError())
+            failure(NSError.APIURLError())
             return
         }
         
-        guard let bodyData = try? NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions.PrettyPrinted) else {
-            failure(error: NSError.dataEncodeError())
+        guard let bodyData = try? JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions.prettyPrinted) else {
+            failure(NSError.dataEncodeError())
             return
         }
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: requestURL, bodyData: bodyData)
-        executeRequest(request) { (data, response, networkError) in
-            let httpURLResponse: NSHTTPURLResponse! = response as? NSHTTPURLResponse
+        executeRequest(request as URLRequest) { (data, response, networkError) in
+            let httpURLResponse: HTTPURLResponse! = response as? HTTPURLResponse
             let error = (data == nil || httpURLResponse.statusCode != 200) ? NSError.dataParseError() : networkError
-            error != nil ? failure(error: error) : success()
+            error != nil ? failure(error) : success()
             self.isLoggedIn = error == nil
         }
     }
     
-    func sendGeneralFeedback(title: String, description: String, success: (Void) -> Void, failure: (error : NSError!) -> Void) {
-        guard let appId = appId, releaseId = releaseId else {
+    func sendGeneralFeedback(_ title: String, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+        guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
             return
         }
         
-        let url = NSURL(string: API.EndPoints.feedback(appId, releaseId: releaseId, title: title.escapedString, text: description.escapedString), relativeToURL: API.BaseURL)!
+        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, title: title.escapedString, text: description.escapedString), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url)
-        executeRequest(request) { (data, response, error) in
-            error != nil ? failure(error: error) : success()
+        executeRequest(request as URLRequest) { (data, response, error) in
+            error != nil ? failure(error) : success()
         }
     }
     
-    func sendScreenFeedback(title: String, screenshot: UIImage, description: String, success: (Void) -> Void, failure: (error : NSError!) -> Void) {
-        guard let appId = appId, releaseId = releaseId else {
+    func sendScreenFeedback(_ title: String, screenshot: UIImage, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+        guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
             return
         }
@@ -81,11 +81,11 @@ class APIHandler {
         let contentType = "\(MimeType.Multipart.rawValue); boundary=\(defaultBoundary)"
         let bodyData = bodyDataForImage(screenshot)
         
-        let url = NSURL(string: "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title.escapedString)&feedback[text]=\(description.escapedString)", relativeToURL: API.BaseURL)!
+        let url = URL(string: "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title.escapedString)&feedback[text]=\(description.escapedString)", relativeTo: API.BaseURL as URL?)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url, bodyData: bodyData, contentType: contentType)
-        executeRequest(request) { (data, response, error) in
-            error != nil ? failure(error: error) : success()
+        executeRequest(request as URLRequest) { (data, response, error) in
+            error != nil ? failure(error) : success()
         }
     }
     
@@ -93,43 +93,44 @@ class APIHandler {
 
     // MARK: Helper
     
-    private func jsonRequestForHttpMethod(method: HTTPMethod, requestURL: NSURL, bodyData: NSData? = nil, contentType: String = MimeType.JSON.rawValue) -> NSMutableURLRequest {
-        let request = NSMutableURLRequest(URL: requestURL)
+    fileprivate func jsonRequestForHttpMethod(_ method: HTTPMethod, requestURL: URL, bodyData: Data? = nil, contentType: String = MimeType.JSON.rawValue) -> NSMutableURLRequest {
+        let request = NSMutableURLRequest(url: requestURL)
         
-        request.HTTPMethod = method.rawValue
+        request.httpMethod = method.rawValue
         request.setValue(contentType, forHTTPHeaderField: HTTPHeaderField.ContentType.rawValue)
         request.setValue(MimeType.JSON.rawValue, forHTTPHeaderField: HTTPHeaderField.Accept.rawValue)
-        request.HTTPBody = bodyData
+        request.httpBody = bodyData
         
         return request
     }
     
-    private func bodyDataForImage(image: UIImage, boundary: String = defaultBoundary) -> NSData {
+    fileprivate func bodyDataForImage(_ image: UIImage, boundary: String = defaultBoundary) -> Data {
         let bodyData = NSMutableData()
         
         let imageData = UIImagePNGRepresentation(image)
         
-        bodyData.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!)
-        bodyData.appendData("Content-Disposition: form-data; name=\"[feedback]screenshot\"; filename=\"screenshot.png\"\r\n".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!)
-        bodyData.appendData("Content-Type: image/png\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!)
-        bodyData.appendData(imageData!)
-        bodyData.appendData("\r\n--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)!)
+        bodyData.append("--\(boundary)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        bodyData.append("Content-Disposition: form-data; name=\"[feedback]screenshot\"; filename=\"screenshot.png\"\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        bodyData.append("Content-Type: image/png\r\n\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        bodyData.append(imageData!)
+        bodyData.append("\r\n--\(boundary)--\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
         
-        return bodyData
+        return bodyData as Data
     }
     
-    private func executeRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
-        let dataTask = session.dataTaskWithRequest(request) { (data, response, error) in
-            NSOperationQueue.mainQueue().addOperationWithBlock {
+    fileprivate func executeRequest(_ request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        let dataTask = session.dataTask(with: request, completionHandler: { (data, response, error) in
+            OperationQueue.main.addOperation {
                 completionHandler(data, response, error)
             }
-        }
+            return ()
+        }) 
         dataTask.resume()
     }
     
     // MARK: Post params
     
-    private func postParamsForLogin(email email: String, password: String) -> [String: AnyObject] {
+    fileprivate func postParamsForLogin(email: String, password: String) -> [String: Any] {
         typealias Session = API.DataTypes.Session
         return [Session.Session: [Session.Email: email, Session.Password: password]]
     }

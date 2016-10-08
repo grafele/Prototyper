@@ -9,16 +9,16 @@
 import UIKit
 import WebKit
 
-@IBDesignable public class PrototypeView: UIView {
-    @IBInspectable public var prototypeAddress: String = "" {
+@IBDesignable open class PrototypeView: UIView {
+    @IBInspectable open var prototypeAddress: String = "" {
         didSet {
-            prototypeURL = NSURL(string: prototypeAddress)
+            prototypeURL = URL(string: prototypeAddress)
             loadContent()
         }
     }
 
-    private var webView: WKWebView!
-    private var prototypeURL: NSURL?
+    fileprivate var webView: WKWebView!
+    fileprivate var prototypeURL: URL?
     
     // MARK: Initializers
     
@@ -35,12 +35,12 @@ import WebKit
     }
     
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         createWebView()
         loadContent()
     }
     
-    override public func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         
         loadContent()
@@ -49,26 +49,26 @@ import WebKit
     // MARK: Startup
     
     func loadContent() {
-        prototypeURL = NSURL(string: prototypeAddress)
+        prototypeURL = URL(string: prototypeAddress)
 
         guard let prototypeURL = prototypeURL else {
             print("Prototype URL is not valid")
             return
         }
         
-        let request = NSURLRequest(URL: prototypeURL)
-        webView.loadRequest(request)
+        let request = URLRequest(url: prototypeURL)
+        webView.load(request)
     }
     
-    private func createWebView() {
+    fileprivate func createWebView() {
         webView = WKWebView(frame: self.bounds)
         webView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(webView)
         
-        let topConstaint = NSLayoutConstraint(item: webView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1, constant: 0)
-        let bottomConstaint = NSLayoutConstraint(item: webView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1, constant: 0)
-        let leftConstraint = NSLayoutConstraint(item: webView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1, constant: 0)
-        let rightConstraint = NSLayoutConstraint(item: webView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1, constant: 0)
+        let topConstaint = NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
+        let bottomConstaint = NSLayoutConstraint(item: webView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: webView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: webView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: 0)
         
         self.addConstraints([topConstaint, bottomConstaint, leftConstraint, rightConstraint])
     }

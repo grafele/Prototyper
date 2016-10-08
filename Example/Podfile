@@ -3,10 +3,4 @@ use_frameworks!
 target 'Prototyper_Example' do
   pod 'Prototyper', :path => '../'
   pod 'jot', :git => 'https://github.com/grafele/jot'
-
-  target 'Prototyper_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end

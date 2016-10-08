@@ -26,11 +26,11 @@ enum HTTPHeaderField: String {
 }
 
 struct API {
-    static let BaseURL = NSURL(string: "https://prototyper-bruegge.in.tum.de/")
+    static let BaseURL = URL(string: "https://prototyper-bruegge.in.tum.de/")
     
     struct EndPoints {
         static let Login = "login"
-        static func feedback(appId: String, releaseId: String, title: String, text: String) -> String {
+        static func feedback(_ appId: String, releaseId: String, title: String, text: String) -> String {
             return "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title)&feedback[text]=\(text)"
         }
     }

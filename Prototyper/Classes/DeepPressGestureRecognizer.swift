@@ -17,8 +17,8 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     var vibrateOnDeepPress = false
     let threshold: CGFloat
     
-    private let pulse = PulseLayer()
-    private var deepPressed: Bool = false
+    fileprivate let pulse = PulseLayer()
+    fileprivate var deepPressed: Bool = false
     
     required init(target: AnyObject?, action: Selector, threshold: CGFloat)
     {
@@ -27,7 +27,7 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
         super.init(target: target, action: action)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent)
     {
         if let touch = touches.first
         {
@@ -35,7 +35,7 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent)
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent)
     {
         if let touch = touches.first
         {
@@ -43,19 +43,19 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent)
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent)
     {
-        super.touchesEnded(touches, withEvent: event)
+        super.touchesEnded(touches, with: event)
         
-        state = deepPressed ? UIGestureRecognizerState.Ended : UIGestureRecognizerState.Failed
+        state = deepPressed ? UIGestureRecognizerState.ended : UIGestureRecognizerState.failed
         
         deepPressed = false
     }
     
-    private func handleTouch(touch: UITouch)
+    fileprivate func handleTouch(_ touch: UITouch)
     {
         if #available(iOS 9.0, *) {
-            guard let _ = view where touch.force != 0 && touch.maximumPossibleForce != 0 else
+            guard let _ = view , touch.force != 0 && touch.maximumPossibleForce != 0 else
             {
                 return
             }
@@ -67,9 +67,9 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
             if !deepPressed && (touch.force / touch.maximumPossibleForce) >= threshold
             {
                 view!.layer.addSublayer(pulse)
-                pulse.pulse(CGRect(origin: CGPointZero, size: view!.frame.size))
+                pulse.pulse(CGRect(origin: CGPoint.zero, size: view!.frame.size))
                 
-                state = UIGestureRecognizerState.Began
+                state = UIGestureRecognizerState.began
                 
                 if vibrateOnDeepPress
                 {
@@ -80,7 +80,7 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
             }
             else if deepPressed && (touch.force / touch.maximumPossibleForce) < threshold
             {
-                state = UIGestureRecognizerState.Ended
+                state = UIGestureRecognizerState.ended
                 
                 deepPressed = false
             }
@@ -96,16 +96,16 @@ protocol DeepPressable
 {
     var gestureRecognizers: [UIGestureRecognizer]? {get set}
     
-    func addGestureRecognizer(gestureRecognizer: UIGestureRecognizer)
-    func removeGestureRecognizer(gestureRecognizer: UIGestureRecognizer)
+    func addGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer)
+    func removeGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer)
     
-    func setDeepPressAction(target: AnyObject, action: Selector)
+    func setDeepPressAction(_ target: AnyObject, action: Selector)
     func removeDeepPressAction()
 }
 
 extension DeepPressable
 {
-    func setDeepPressAction(target: AnyObject, action: Selector)
+    func setDeepPressAction(_ target: AnyObject, action: Selector)
     {
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: target, action: action, threshold: 0.75)
         
@@ -132,15 +132,15 @@ extension DeepPressable
 
 class PulseLayer: CAShapeLayer
 {
-    var pulseColor: CGColorRef = UIColor.redColor().CGColor
+    var pulseColor: CGColor = UIColor.red.cgColor
     
-    func pulse(frame: CGRect)
+    func pulse(_ frame: CGRect)
     {
         strokeColor = pulseColor
         fillColor = nil
         
-        let startPath = UIBezierPath(roundedRect: frame, cornerRadius: 5).CGPath
-        let endPath = UIBezierPath(roundedRect: frame.insetBy(dx: -50, dy: -50), cornerRadius: 5).CGPath
+        let startPath = UIBezierPath(roundedRect: frame, cornerRadius: 5).cgPath
+        let endPath = UIBezierPath(roundedRect: frame.insetBy(dx: -50, dy: -50), cornerRadius: 5).cgPath
         
         path = startPath
         lineWidth = 1
@@ -165,10 +165,10 @@ class PulseLayer: CAShapeLayer
         {
             animation.duration = 0.25
             animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            animation.removedOnCompletion = false
+            animation.isRemovedOnCompletion = false
             animation.fillMode = kCAFillModeForwards
             
-            addAnimation(animation, forKey: animation.keyPath)
+            add(animation, forKey: animation.keyPath)
         }
         
         CATransaction.commit()

@@ -10,6 +10,6 @@ import Foundation
 
 extension String {
     var escapedString: String {
-        return self.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? ""
+        return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
 }

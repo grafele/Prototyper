@@ -8,9 +8,9 @@
 
 import UIKit
 
-public class PrototypeViewController: UIViewController {
+open class PrototypeViewController: UIViewController {
     
-    public var prototypeAddress: String = "" {
+    open var prototypeAddress: String = "" {
         didSet {
             guard prototypeView != nil else { return }
             prototypeView.prototypeAddress = prototypeAddress
@@ -18,17 +18,17 @@ public class PrototypeViewController: UIViewController {
         }
     }
     
-    public var enableForceTouchToFeedback: Bool = true {
+    open var enableForceTouchToFeedback: Bool = true {
         didSet {
             addTouchRecognizer()
         }
     }
     
-    private var prototypeView: PrototypeView!
-    private var touchRecognizer: UIGestureRecognizer!
-    private var currentlyPresenting: Bool = false
+    fileprivate var prototypeView: PrototypeView!
+    fileprivate var touchRecognizer: UIGestureRecognizer!
+    fileprivate var currentlyPresenting: Bool = false
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         automaticallyAdjustsScrollViewInsets = false
@@ -40,31 +40,31 @@ public class PrototypeViewController: UIViewController {
         addTouchRecognizer()
     }
     
-    public func loadPrototypePage(pageId: String) {
+    open func loadPrototypePage(_ pageId: String) {
         PrototypeController.sharedInstance.prototypePathForPageId(pageId) { (prototypePath) in
             self.prototypeAddress = prototypePath
         }
     }
     
-    private func createPrototypeView() {
+    fileprivate func createPrototypeView() {
         prototypeView = PrototypeView(frame: self.view.bounds)
         prototypeView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(prototypeView)
         
-        let topConstaint = NSLayoutConstraint(item: prototypeView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: 0)
-        let bottomConstaint = NSLayoutConstraint(item: prototypeView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: 0)
-        let leftConstraint = NSLayoutConstraint(item: prototypeView, attribute: .Left, relatedBy: .Equal, toItem: self.view, attribute: .Left, multiplier: 1, constant: 0)
-        let rightConstraint = NSLayoutConstraint(item: prototypeView, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1, constant: 0)
+        let topConstaint = NSLayoutConstraint(item: prototypeView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
+        let bottomConstaint = NSLayoutConstraint(item: prototypeView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: prototypeView, attribute: .left, relatedBy: .equal, toItem: self.view, attribute: .left, multiplier: 1, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: prototypeView, attribute: .right, relatedBy: .equal, toItem: self.view, attribute: .right, multiplier: 1, constant: 0)
         
         self.view.addConstraints([topConstaint, bottomConstaint, leftConstraint, rightConstraint])
     }
     
-    private func addTouchRecognizer() {
-        defer { touchRecognizer.enabled = enableForceTouchToFeedback }
+    fileprivate func addTouchRecognizer() {
+        defer { touchRecognizer.isEnabled = enableForceTouchToFeedback }
         guard touchRecognizer == nil else { return }
         
         if #available(iOS 9.0, *) {
-            if self.view.traitCollection.forceTouchCapability == .Available {
+            if self.view.traitCollection.forceTouchCapability == .available {
                 let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(showFeedbackView), threshold: 0.8)
                 deepPressGestureRecognizer.vibrateOnDeepPress = true
                 deepPressGestureRecognizer.delegate = self
@@ -82,7 +82,7 @@ public class PrototypeViewController: UIViewController {
     
     // MARK: Actions
     
-    public func showFeedbackView() {
+    open func showFeedbackView() {
         guard presentingViewController == nil else { return }
         guard !currentlyPresenting else { return }
         
@@ -90,11 +90,11 @@ public class PrototypeViewController: UIViewController {
         
         let feedbackViewController = FeedbackViewController()
         
-        let screenshot = UIApplication.sharedApplication().keyWindow?.snaphot()
+        let screenshot = UIApplication.shared.keyWindow?.snaphot()
         feedbackViewController.screenshot = screenshot
         
         let navigationController = UINavigationController(rootViewController: feedbackViewController)
-        self.presentViewController(navigationController, animated: true) {
+        self.present(navigationController, animated: true) {
             self.currentlyPresenting = false
         }
     }
@@ -103,7 +103,7 @@ public class PrototypeViewController: UIViewController {
 // MARK: - UIGestureRecognizerDelegate
 
 extension PrototypeViewController: UIGestureRecognizerDelegate {
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }
