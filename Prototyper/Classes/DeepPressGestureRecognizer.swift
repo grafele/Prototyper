@@ -54,38 +54,24 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     
     fileprivate func handleTouch(_ touch: UITouch)
     {
-        if #available(iOS 9.0, *) {
-            guard let _ = view , touch.force != 0 && touch.maximumPossibleForce != 0 else
-            {
-                return
-            }
-        } else {
-            // Fallback on earlier versions
-        }
+        guard #available(iOS 9.0, *) else { return }
+        guard let _ = view , touch.force != 0 && touch.maximumPossibleForce != 0 else { return }
         
-        if #available(iOS 9.0, *) {
-            if !deepPressed && (touch.force / touch.maximumPossibleForce) >= threshold
-            {
-                view!.layer.addSublayer(pulse)
-                pulse.pulse(CGRect(origin: CGPoint.zero, size: view!.frame.size))
-                
-                state = UIGestureRecognizerState.began
-                
-                if vibrateOnDeepPress
-                {
-                    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
-                }
-                
-                deepPressed = true
+        if !deepPressed && (touch.force / touch.maximumPossibleForce) >= threshold {
+            view!.layer.addSublayer(pulse)
+            pulse.pulse(CGRect(origin: CGPoint.zero, size: view!.frame.size))
+            
+            state = UIGestureRecognizerState.began
+            
+            if vibrateOnDeepPress {
+                AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
             }
-            else if deepPressed && (touch.force / touch.maximumPossibleForce) < threshold
-            {
-                state = UIGestureRecognizerState.ended
+            
+            deepPressed = true
+        } else if deepPressed && (touch.force / touch.maximumPossibleForce) < threshold {
+            state = UIGestureRecognizerState.ended
                 
-                deepPressed = false
-            }
-        } else {
-            // Fallback on earlier versions
+            deepPressed = false
         }
     }
 }

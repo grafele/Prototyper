@@ -18,7 +18,7 @@ open class PrototypeViewController: UIViewController {
         }
     }
     
-    open var enableForceTouchToFeedback: Bool = true {
+    open var enableFeedback: Bool = true {
         didSet {
             addTouchRecognizer()
         }
@@ -60,9 +60,9 @@ open class PrototypeViewController: UIViewController {
     }
     
     fileprivate func addTouchRecognizer() {
-        defer { touchRecognizer.isEnabled = enableForceTouchToFeedback }
-        guard touchRecognizer == nil else { return }
+        print("add touch recognizer")
         
+        /*
         if #available(iOS 9.0, *) {
             if self.view.traitCollection.forceTouchCapability == .available {
                 let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(showFeedbackView), threshold: 0.8)
@@ -74,6 +74,7 @@ open class PrototypeViewController: UIViewController {
                 return
             }
         }
+         */
         
         touchRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(showFeedbackView))
         touchRecognizer.delegate = self
@@ -83,6 +84,8 @@ open class PrototypeViewController: UIViewController {
     // MARK: Actions
     
     open func showFeedbackView() {
+        print("show feedback view")
+
         guard presentingViewController == nil else { return }
         guard !currentlyPresenting else { return }
         
