@@ -37,9 +37,9 @@ open class PrototypeController: NSObject {
     }
     
     fileprivate func unzipContainerIfNecessary(_ containerPath: String, documentsPath: String) {
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: containerPath)) else { return }
-   
-        let md5String = (data as NSData).md5().description
+        guard let data = FileManager.default.contents(atPath: containerPath) as? NSData else { return }
+        
+        let md5String = (data.md5() as NSData).description
         let oldMD5String = UserDefaults.standard.string(forKey: PrototypeController.PrototypeControllerMD5HashKey)
         if oldMD5String == nil || md5String != oldMD5String! {
             SSZipArchive.unzipFile(atPath: containerPath, toDestination: documentsPath)
