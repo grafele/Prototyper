@@ -15,6 +15,7 @@ class ViewController: PrototypeViewController {
         super.viewDidLoad()
                 
         self.loadPrototypePage("12469416")
+        PrototypeController.sharedInstance.shouldShowFeedbackButton = true
     }
     
 }

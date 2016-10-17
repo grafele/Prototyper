@@ -19,6 +19,23 @@ open class PrototypeController: NSObject {
     
     fileprivate var completionHandler: ((Void) -> Void)?
     
+    fileprivate var feedbackBubble: FeedbackBubble!
+    
+    open var shouldShowFeedbackButton: Bool =  true {
+        didSet {
+            guard self.feedbackBubble == nil else { return }
+
+            let keyWindow = UIApplication.shared.keyWindow ?? UIApplication.shared.windows.first
+            feedbackBubble = FeedbackBubble(target: self, action: #selector(feedbackBubbleTouched))
+            feedbackBubble.layer.zPosition = 100
+            keyWindow?.addSubview(feedbackBubble)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                keyWindow?.addSubview(self.feedbackBubble)
+            }
+        }
+    }
+    
     open func preloadPrototypes(_ completionHandler: ((Void) -> Void)?) {
         let containerPath = Bundle.main.path(forResource: "container", ofType: "zip")!
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -72,6 +89,23 @@ open class PrototypeController: NSObject {
         }
         
         return nil
+    }
+    
+    func feedbackBubbleTouched() {
+        let actionSheet = UIAlertController(title: Texts.FeedbackActionSheet.Title, message: Texts.FeedbackActionSheet.Text, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.WriteFeedback, style: .default) { _ in
+            print("Write feedback")
+        })
+        actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.ShareApp, style: .default) { _ in
+            print("Share app")
+        })
+        actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.HideFeedbackBubble, style: .default) { _ in
+            print("Hide feedback bubble")
+        })
+        actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.Cancel, style: .cancel, handler: nil))
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            rootViewController.present(actionSheet, animated: true, completion: nil)
+        }
     }
 }
 

@@ -43,3 +43,14 @@ struct API {
         }
     }
 }
+
+struct Texts {
+    struct FeedbackActionSheet {
+        static let Title = "Give us some feedback"
+        static let Text: String? = nil
+        static let WriteFeedback = "Send some feedback"
+        static let ShareApp = "Share app"
+        static let HideFeedbackBubble = "Hide button"
+        static let Cancel = "Cancel"
+    }
+}

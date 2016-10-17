@@ -202,6 +202,10 @@
 		F1509220863D5DAAAD0B68AD8F8833D1 /* JotTouchBezier.h in Headers */ = {isa = PBXBuildFile; fileRef = 5300A517A0F772A5CE67187E23BB3E20 /* JotTouchBezier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F290435DF37C99969C82AF4100C1E807 /* JotTextEditView.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A1F3FFB685693529A46E68B67E02E98 /* JotTextEditView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F5BFE3BFBAA2ECDD0864FED16ECDB598 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B651067A95DE3F64336EA4194883CC3 /* UIKit.framework */; };
+		F62368FF1DB5049300C5A23D /* feedback_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F62368FC1DB5049300C5A23D /* feedback_icon.png */; };
+		F62369001DB5049300C5A23D /* feedback_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F62368FD1DB5049300C5A23D /* feedback_icon@2x.png */; };
+		F62369011DB5049300C5A23D /* feedback_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F62368FE1DB5049300C5A23D /* feedback_icon@3x.png */; };
+		F62369031DB50B9200C5A23D /* FeedbackBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62369021DB50B9200C5A23D /* FeedbackBubble.swift */; };
 		F854FD81B447DE7DE98EFA7B2A5E506B /* GCDWebServerDataResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BD92793FE7366084FBBDB722F7DF568C /* GCDWebServerDataResponse.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		F8975051295364E3D166CB71CF96F185 /* GCDWebServerRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D2BD7179639087AC23F2868B32360BDF /* GCDWebServerRequest.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		F98F883D0AC752EEC3958FED5FFD1CF3 /* NSLayoutConstraint+MASDebugAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BC28721FDE8056C3FD480B0B35F62D /* NSLayoutConstraint+MASDebugAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -554,6 +558,10 @@
 		F3D039B52FF81E0293BFCF1078B60B39 /* AFAutoPurgingImageCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFAutoPurgingImageCache.h; path = "UIKit+AFNetworking/AFAutoPurgingImageCache.h"; sourceTree = "<group>"; };
 		F4AA61C376DB77762F7B32A8871924DA /* PrototypeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PrototypeView.swift; sourceTree = "<group>"; };
 		F55BEAF3386F33A6DC3505E59BF0879A /* SSZipArchive-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SSZipArchive-dummy.m"; sourceTree = "<group>"; };
+		F62368FC1DB5049300C5A23D /* feedback_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = feedback_icon.png; sourceTree = "<group>"; };
+		F62368FD1DB5049300C5A23D /* feedback_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feedback_icon@2x.png"; sourceTree = "<group>"; };
+		F62368FE1DB5049300C5A23D /* feedback_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feedback_icon@3x.png"; sourceTree = "<group>"; };
+		F62369021DB50B9200C5A23D /* FeedbackBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackBubble.swift; sourceTree = "<group>"; };
 		F70282893DEBBA33E8AC23B5CF533E0F /* GCDWebServerDataRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDWebServerDataRequest.h; path = GCDWebServer/Requests/GCDWebServerDataRequest.h; sourceTree = "<group>"; };
 		F7694FAE3B01F3FFE8B8AF99FC619F7E /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLRequestSerialization.m; path = AFNetworking/AFURLRequestSerialization.m; sourceTree = "<group>"; };
 		F904D33DB2DC5CD5059AD8279ABDD859 /* Masonry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Masonry.h; path = Masonry/Masonry.h; sourceTree = "<group>"; };
@@ -953,6 +961,7 @@
 				92573BC9360210D4DD3B132E216A9C2B /* LoginViewController.swift */,
 				230DCB8983521B0B0DC9733C2E57BB56 /* NSError+APIHandler.swift */,
 				4652A2D237D7FB916335619541730CDE /* PrototypeController.swift */,
+				F62369021DB50B9200C5A23D /* FeedbackBubble.swift */,
 				F4AA61C376DB77762F7B32A8871924DA /* PrototypeView.swift */,
 				7044EB3133E279A0F3132B4083140D1C /* PrototypeViewController.swift */,
 				E2E895E2305647843B0B64E6CA5CF3C9 /* String+Escape.swift */,
@@ -1034,6 +1043,9 @@
 			isa = PBXGroup;
 			children = (
 				B441A0BC449E2D1FAC455ECD6FB5BE27 /* Login.storyboard */,
+				F62368FC1DB5049300C5A23D /* feedback_icon.png */,
+				F62368FD1DB5049300C5A23D /* feedback_icon@2x.png */,
+				F62368FE1DB5049300C5A23D /* feedback_icon@3x.png */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1552,6 +1564,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				30263E8463BD80B61531DF04E939DDE7 /* Login.storyboard in Resources */,
+				F62368FF1DB5049300C5A23D /* feedback_icon.png in Resources */,
+				F62369001DB5049300C5A23D /* feedback_icon@2x.png in Resources */,
+				F62369011DB5049300C5A23D /* feedback_icon@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1690,6 +1705,7 @@
 				284C449823CB430D3EA07FCE5973D356 /* PrototypeController.swift in Sources */,
 				BD5CFBEE0EFDF25F07EB39213C2CFAEE /* Prototyper-dummy.m in Sources */,
 				C9A085520F4736EBC36596DFB77F167B /* PrototypeView.swift in Sources */,
+				F62369031DB50B9200C5A23D /* FeedbackBubble.swift in Sources */,
 				C67508E55A2CBBB64318668554DC2EE1 /* PrototypeViewController.swift in Sources */,
 				B5E8A88C774595E2DD26D69F9BBF02D8 /* String+Escape.swift in Sources */,
 				6F250F5E6862268A83623115B3A130A4 /* UIWindow+Snaphot.swift in Sources */,
