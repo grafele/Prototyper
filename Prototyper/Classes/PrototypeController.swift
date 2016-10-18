@@ -23,15 +23,11 @@ open class PrototypeController: NSObject {
     
     open var shouldShowFeedbackButton: Bool =  true {
         didSet {
-            guard self.feedbackBubble == nil else { return }
-
-            let keyWindow = UIApplication.shared.keyWindow ?? UIApplication.shared.windows.first
-            feedbackBubble = FeedbackBubble(target: self, action: #selector(feedbackBubbleTouched))
-            feedbackBubble.layer.zPosition = 100
-            keyWindow?.addSubview(feedbackBubble)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                keyWindow?.addSubview(self.feedbackBubble)
+            if shouldShowFeedbackButton {
+                feedbackBubble?.isHidden = false
+                addFeedbackButton()
+            } else {
+                feedbackBubble?.isHidden = true
             }
         }
     }
@@ -43,6 +39,13 @@ open class PrototypeController: NSObject {
         unzipContainerIfNecessary(containerPath, documentsPath: documentsPath)
         startWebServerForPath(documentsPath) {
             completionHandler?()
+        }
+        
+        APIHandler.sharedAPIHandler.fetchReleaseInformation(success: { (appId, releaseId) in
+            UserDefaults.standard.set(appId, forKey: UserDefaultKeys.AppId)
+            UserDefaults.standard.set(releaseId, forKey: UserDefaultKeys.ReleaseId)
+        }) { error in
+            print("Error fetching release information: \(error)")
         }
     }
     
@@ -91,21 +94,66 @@ open class PrototypeController: NSObject {
         return nil
     }
     
+    // MARK: Feedback
+    
     func feedbackBubbleTouched() {
         let actionSheet = UIAlertController(title: Texts.FeedbackActionSheet.Title, message: Texts.FeedbackActionSheet.Text, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.WriteFeedback, style: .default) { _ in
-            print("Write feedback")
+            self.showFeedbackView()
         })
         actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.ShareApp, style: .default) { _ in
-            print("Share app")
+            self.shareApp()
         })
         actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.HideFeedbackBubble, style: .default) { _ in
-            print("Hide feedback bubble")
+            self.hideFeedbackButton()
         })
         actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.Cancel, style: .cancel, handler: nil))
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             rootViewController.present(actionSheet, animated: true, completion: nil)
         }
+    }
+    
+    private func addFeedbackButton() {
+        guard self.feedbackBubble == nil else { return }
+        
+        let keyWindow = UIApplication.shared.keyWindow ?? UIApplication.shared.windows.first
+        feedbackBubble = FeedbackBubble(target: self, action: #selector(feedbackBubbleTouched))
+        feedbackBubble.layer.zPosition = 100
+        keyWindow?.addSubview(feedbackBubble)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            keyWindow?.addSubview(self.feedbackBubble)
+        }
+    }
+    
+    private func showFeedbackView() {
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        
+        let feedbackViewController = FeedbackViewController()
+        
+        let screenshot = UIApplication.shared.keyWindow?.snaphot()
+        feedbackViewController.screenshot = screenshot
+        
+        let navigationController = UINavigationController(rootViewController: feedbackViewController)
+        rootViewController.present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func hideFeedbackButton() {
+        UIView.animate(withDuration: 0.3, animations: { 
+            self.feedbackBubble?.alpha = 0.0
+        }) { _ in
+            self.shouldShowFeedbackButton = false
+            self.feedbackBubble?.alpha = 1.0
+        }
+    }
+    
+    private func shareApp() {
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        
+        let shareViewController = ShareViewController()
+                
+        let navigationController = UINavigationController(rootViewController: shareViewController)
+        rootViewController.present(navigationController, animated: true, completion: nil)
     }
 }
 

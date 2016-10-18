@@ -16,10 +16,10 @@ private let defaultBoundary = "------VohpleBoundary4QuqLuM1cE5lMwCy"
 class APIHandler {
     let session: URLSession
     var appId: String! {
-        return Bundle.main.object(forInfoDictionaryKey: "PrototyperAppId") as? String
+        return Bundle.main.object(forInfoDictionaryKey: "PrototyperAppId") as? String ?? UserDefaults.standard.string(forKey: UserDefaultKeys.AppId)
     }
     var releaseId: String! {
-        return Bundle.main.object(forInfoDictionaryKey: "PrototyperReleaseId") as? String
+        return Bundle.main.object(forInfoDictionaryKey: "PrototyperReleaseId") as? String ?? UserDefaults.standard.string(forKey: UserDefaultKeys.ReleaseId)
     }
     
     var isLoggedIn: Bool = false
@@ -34,6 +34,32 @@ class APIHandler {
     }
     
     // MARK: API Methods
+    
+    func fetchReleaseInformation(success: @escaping (_ appId: String, _ releaseId: String) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+        let bundleId = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? ""
+        let bundleVersion = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? ""
+        
+        let url = URL(string: API.EndPoints.fetchReleaseInfo(bundleId: bundleId, bundleVersion: bundleVersion), relativeTo: API.BaseURL)!
+        
+        let request = jsonRequestForHttpMethod(.POST, requestURL: url)
+        executeRequest(request as URLRequest) { (data, response, error) in
+            guard let data = data else {
+                failure(error)
+                return
+            }
+            
+            do {
+                let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String]
+                if let dict = dict, let appId = dict["app_id"], let releaseId = dict["release_id"] {
+                    success(appId, releaseId)
+                } else {
+                    failure(error)
+                }
+            } catch {
+                failure(error)
+            }
+        }
+    }
     
     func login(_ email: String, password: String,  success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         let params = postParamsForLogin(email: email, password: password)
@@ -84,6 +110,20 @@ class APIHandler {
         let url = URL(string: "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title.escapedString)&feedback[text]=\(description.escapedString)", relativeTo: API.BaseURL as URL?)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url, bodyData: bodyData, contentType: contentType)
+        executeRequest(request as URLRequest) { (data, response, error) in
+            error != nil ? failure(error) : success()
+        }
+    }
+    
+    func sendShareRequest(for email: String, because explanation: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+        guard let appId = appId, let releaseId = releaseId else {
+            print("You need to set the app and release id first")
+            return
+        }
+
+        let url = URL(string: API.EndPoints.share(appId, releaseId: releaseId, sharedEmail: email, explanation: explanation), relativeTo: API.BaseURL)!
+        
+        let request = jsonRequestForHttpMethod(.POST, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in
             error != nil ? failure(error) : success()
         }

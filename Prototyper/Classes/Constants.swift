@@ -30,8 +30,15 @@ struct API {
     
     struct EndPoints {
         static let Login = "login"
+        static func fetchReleaseInfo(bundleId: String, bundleVersion: String) -> String {
+            return "apps/find_release?bundle_id=\(bundleId)&bundle_version=\(bundleVersion)"
+        }
+
         static func feedback(_ appId: String, releaseId: String, title: String, text: String) -> String {
             return "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title)&feedback[text]=\(text)"
+        }
+        static func share(_ appId: String, releaseId: String, sharedEmail: String, explanation: String) -> String {
+            return "apps/\(appId)/releases/\(releaseId)/share_app?share_email=\(sharedEmail)&explanation=\(explanation)"
         }
     }
     
@@ -53,4 +60,9 @@ struct Texts {
         static let HideFeedbackBubble = "Hide button"
         static let Cancel = "Cancel"
     }
+}
+
+struct UserDefaultKeys {
+    static let AppId = "AppId"
+    static let ReleaseId = "ReleaseId"
 }
