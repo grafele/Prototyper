@@ -41,7 +41,7 @@ class APIHandler {
         
         let url = URL(string: API.EndPoints.fetchReleaseInfo(bundleId: bundleId, bundleVersion: bundleVersion), relativeTo: API.BaseURL)!
         
-        let request = jsonRequestForHttpMethod(.POST, requestURL: url)
+        let request = jsonRequestForHttpMethod(.GET, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in
             guard let data = data else {
                 failure(error)

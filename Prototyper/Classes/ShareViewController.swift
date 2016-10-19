@@ -131,7 +131,6 @@ class ShareViewController: UIViewController {
             
             self.view.layoutIfNeeded()
         })
-        
     }
     
     func keyboardWillHide(_ notification: Notification) {
@@ -152,27 +151,38 @@ class ShareViewController: UIViewController {
     }
 
     func sendButtonPressed(_ sender: AnyObject) {
-        guard APIHandler.sharedAPIHandler.isLoggedIn else  {
-            print("You need to make sure you are logged in.")
-            
-            let keychain = KeychainSwift()
-            let oldUsername = keychain.get(LoginViewController.UsernameKey)
-            let oldPassword = keychain.get(LoginViewController.PasswordKey)
-            
-            if let oldUsername = oldUsername, let oldPassword = oldPassword {
-                APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {
-                    self.sendButtonPressed(self)
-                }) { (error) in
-                    self.showLoginView()
-                }
-            } else {
-                showLoginView()
-            }
-            
-            
-            return
+        if !APIHandler.sharedAPIHandler.isLoggedIn {
+            let alertController = UIAlertController(title: Texts.LoginAlertSheet.Title, message: nil, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.Yes, style: .default, handler: { _ in
+                self.login()
+            }))
+            alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .cancel, handler: { _ in
+                self.sendFeedback()
+            }))
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            sendFeedback()
         }
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    private func login() {
+        let keychain = KeychainSwift()
+        let oldUsername = keychain.get(LoginViewController.UsernameKey)
+        let oldPassword = keychain.get(LoginViewController.PasswordKey)
+        
+        if let oldUsername = oldUsername, let oldPassword = oldPassword {
+            APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {
+                self.sendFeedback()
+            }) { (error) in
+                self.showLoginView()
+            }
+        } else {
+            self.showLoginView()
+        }
+    }
+    
+    private func sendFeedback() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let explanationText = explanationTextView.text == ShareViewController.ExplanationTextViewPlaceholder ? "" : explanationTextView.text!
         
@@ -184,6 +194,7 @@ class ShareViewController: UIViewController {
             self.showErrorAlert()
         }
     }
+
     
     // MARK: Helper
     
