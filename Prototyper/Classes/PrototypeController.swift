@@ -144,6 +144,8 @@ open class PrototypeController: NSObject {
         }) { _ in
             self.shouldShowFeedbackButton = false
             self.feedbackBubble?.alpha = 1.0
+            
+            self.showInfoAlertAfterHiding()
         }
     }
     
@@ -154,6 +156,14 @@ open class PrototypeController: NSObject {
                 
         let navigationController = UINavigationController(rootViewController: shareViewController)
         rootViewController.present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func showInfoAlertAfterHiding() {
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+
+        let alertController = UIAlertController(title: Texts.FeedbackHideAlertSheet.Title, message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: Texts.FeedbackHideAlertSheet.OK, style: .default, handler: nil))
+        rootViewController.present(alertController, animated: true, completion: nil)
     }
 }
 
