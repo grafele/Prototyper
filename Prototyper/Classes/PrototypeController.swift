@@ -98,6 +98,8 @@ open class PrototypeController: NSObject {
     
     func feedbackBubbleTouched() {
         let actionSheet = UIAlertController(title: Texts.FeedbackActionSheet.Title, message: Texts.FeedbackActionSheet.Text, preferredStyle: .actionSheet)
+        actionSheet.popoverPresentationController?.sourceView = feedbackBubble
+        actionSheet.popoverPresentationController?.sourceRect = feedbackBubble.bounds
         actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.WriteFeedback, style: .default) { _ in
             self.showFeedbackView()
         })
