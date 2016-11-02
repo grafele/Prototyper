@@ -49,9 +49,9 @@ class APIHandler {
             }
             
             do {
-                let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String]
+                let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Int]
                 if let dict = dict, let appId = dict["app_id"], let releaseId = dict["release_id"] {
-                    success(appId, releaseId)
+                    success("\(appId)", "\(releaseId)")
                 } else {
                     failure(error)
                 }
@@ -101,6 +101,7 @@ class APIHandler {
     func sendScreenFeedback(_ title: String, screenshot: UIImage, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
+            failure(nil)
             return
         }
 
