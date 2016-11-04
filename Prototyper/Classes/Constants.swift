@@ -34,8 +34,8 @@ struct API {
             return "apps/find_release?bundle_id=\(bundleId)&bundle_version=\(bundleVersion)"
         }
 
-        static func feedback(_ appId: String, releaseId: String, title: String, text: String) -> String {
-            return "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title)&feedback[text]=\(text)"
+        static func feedback(_ appId: String, releaseId: String, text: String) -> String {
+            return "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[text]=\(text)"
         }
         static func share(_ appId: String, releaseId: String, sharedEmail: String, explanation: String) -> String {
             return "apps/\(appId)/releases/\(releaseId)/share_app?share_email=\(sharedEmail)&explanation=\(explanation)"

@@ -84,13 +84,13 @@ class APIHandler {
         }
     }
     
-    func sendGeneralFeedback(_ title: String, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+    func sendGeneralFeedback(description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
             return
         }
         
-        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, title: title.escapedString, text: description.escapedString), relativeTo: API.BaseURL)!
+        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in

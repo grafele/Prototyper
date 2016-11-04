@@ -99,6 +99,26 @@ class FeedbackViewController: UIViewController {
         
         view.addConstraints(horizontalConstraints)
         view.addConstraints(verticalConstraints)
+        
+        let deleteButtonSize: CGFloat = 25
+        
+        let deleteButton = UIButton(type: .custom)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.backgroundColor = UIColor.black
+        deleteButton.tintColor = UIColor.white
+        deleteButton.setTitle("x", for: .normal)
+        deleteButton.layer.cornerRadius = deleteButtonSize/2.0
+        deleteButton.addTarget(self, action: #selector(deleteScreenshotButtonPressed(_:)), for: .touchUpInside)
+        screenshotButton.addSubview(deleteButton)
+        
+        let deleteButtonMetrics = ["inset": -8, "size": deleteButtonSize]
+        let deleteButtonViews = ["deleteButton": deleteButton]
+        
+        let horizontalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-inset-[deleteButton(size)]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
+        let verticalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-inset-[deleteButton(size)]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
+        
+        screenshotButton.addConstraints(horizontalButtonConstraints)
+        screenshotButton.addConstraints(verticalButtonConstraints)
     }
     
     private func addActivityIndicator() {
@@ -175,6 +195,12 @@ class FeedbackViewController: UIViewController {
         }
     }
     
+    func deleteScreenshotButtonPressed(_ sender: Any) {
+        screenshot = nil
+        screenshotButton.isHidden = true
+        descriptionTextView.textContainer.exclusionPaths = []
+    }
+    
     private func login() {
         let keychain = KeychainSwift()
         let oldUsername = keychain.get(LoginViewController.UsernameKey)
@@ -192,26 +218,38 @@ class FeedbackViewController: UIViewController {
     }
     
     private func sendFeedback() {
-        guard let screenshot = screenshot else {
-            print("You need a screenshot set to send screen feedback")
-            return
-        }
-        
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
         
         showAcitivityIndicator()
-        APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, success: {
-            print("Successfully sent feedback to server")
-            self.activityIndicator.stopAnimating()
-            PrototypeController.sharedInstance.isFeedbackButtonHidden = self.wasFeedbackButtonHidden
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
-        }) { (error) in
-            self.activityIndicator.stopAnimating()
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
-            self.showErrorAlert()
+        
+        if let screenshot = screenshot {
+            APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, success: {
+                self.feedbackSendingSuccesfull()
+            }) { (error) in
+                self.feedbackSendingFailed()
+            }
+        } else {
+            APIHandler.sharedAPIHandler.sendGeneralFeedback(description: descriptionText!, success: {
+                self.feedbackSendingSuccesfull()
+            }, failure: { (error) in
+                self.feedbackSendingFailed()
+            })
         }
+    }
+    
+    private func feedbackSendingSuccesfull() {
+        print("Successfully sent feedback to server")
+        self.activityIndicator.stopAnimating()
+        PrototypeController.sharedInstance.isFeedbackButtonHidden = self.wasFeedbackButtonHidden
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    private func feedbackSendingFailed() {
+        self.activityIndicator.stopAnimating()
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        self.showErrorAlert()
     }
     
     func imageButtonPressed(_ sender: AnyObject) {
