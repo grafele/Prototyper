@@ -57,7 +57,7 @@ struct Texts {
         static let Text: String? = nil
         static let WriteFeedback = "Give feedback"
         static let ShareApp = "Share app"
-        static let HideFeedbackBubble = "Remove feedback icon"
+        static let HideFeedbackBubble = "Hide this button"
         static let Cancel = "Cancel"
     }
     
