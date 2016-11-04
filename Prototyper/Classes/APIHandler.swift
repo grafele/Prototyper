@@ -98,7 +98,7 @@ class APIHandler {
         }
     }
     
-    func sendScreenFeedback(_ title: String, screenshot: UIImage, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+    func sendScreenFeedback(screenshot: UIImage, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
             failure(nil)
@@ -108,7 +108,7 @@ class APIHandler {
         let contentType = "\(MimeType.Multipart.rawValue); boundary=\(defaultBoundary)"
         let bodyData = bodyDataForImage(screenshot)
         
-        let url = URL(string: "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[title]=\(title.escapedString)&feedback[text]=\(description.escapedString)", relativeTo: API.BaseURL as URL?)!
+        let url = URL(string: "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[text]=\(description.escapedString)", relativeTo: API.BaseURL as URL?)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url, bodyData: bodyData, contentType: contentType)
         executeRequest(request as URLRequest) { (data, response, error) in

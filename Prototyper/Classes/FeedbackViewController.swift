@@ -182,7 +182,7 @@ class FeedbackViewController: UIViewController {
         
         let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
         
-        APIHandler.sharedAPIHandler.sendScreenFeedback("", screenshot: screenshot, description: descriptionText!, success: {
+        APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, success: {
             print("Successfully sent feedback to server")
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }) { (error) in
