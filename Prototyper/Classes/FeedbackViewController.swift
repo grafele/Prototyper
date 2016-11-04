@@ -24,12 +24,16 @@ class FeedbackViewController: UIViewController {
     fileprivate var annotationViewController: UIViewController?
     
     fileprivate var activityIndicator: UIActivityIndicatorView!
+    
+    fileprivate var wasFeedbackButtonHidden = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = "Feedback"
         self.automaticallyAdjustsScrollViewInsets = false
+        self.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
+        PrototypeController.sharedInstance.isFeedbackButtonHidden = true
         
         view.backgroundColor = UIColor.white
         
@@ -152,6 +156,7 @@ class FeedbackViewController: UIViewController {
     // MARK: Actions
         
     func cancelButtonPressed(_ sender: AnyObject) {
+        PrototypeController.sharedInstance.isFeedbackButtonHidden = wasFeedbackButtonHidden
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
@@ -200,6 +205,7 @@ class FeedbackViewController: UIViewController {
         APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, success: {
             print("Successfully sent feedback to server")
             self.activityIndicator.stopAnimating()
+            PrototypeController.sharedInstance.isFeedbackButtonHidden = self.wasFeedbackButtonHidden
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }) { (error) in
             self.activityIndicator.stopAnimating()

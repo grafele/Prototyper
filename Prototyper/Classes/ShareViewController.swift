@@ -20,11 +20,15 @@ class ShareViewController: UIViewController {
     fileprivate var bottomSpaceConstraint: NSLayoutConstraint!
     fileprivate var annotationViewController: UIViewController?
 
+    fileprivate var wasFeedbackButtonHidden = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = "Share app"
-        
+        self.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
+        PrototypeController.sharedInstance.isFeedbackButtonHidden = true
+
         view.backgroundColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(ShareViewController.cancelButtonPressed(_:)))
@@ -147,6 +151,7 @@ class ShareViewController: UIViewController {
     // MARK: Actions
         
     func cancelButtonPressed(_ sender: AnyObject) {
+        PrototypeController.sharedInstance.isFeedbackButtonHidden = wasFeedbackButtonHidden
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
@@ -188,6 +193,7 @@ class ShareViewController: UIViewController {
         
         APIHandler.sharedAPIHandler.sendShareRequest(for: emailTextField.text ?? "", because: explanationText, success: {
             print("Successfully sent share request to server")
+            PrototypeController.sharedInstance.isFeedbackButtonHidden = self.wasFeedbackButtonHidden
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }) { (error) in
             self.navigationItem.rightBarButtonItem?.isEnabled = true

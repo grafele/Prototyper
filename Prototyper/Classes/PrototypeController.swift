@@ -21,13 +21,23 @@ open class PrototypeController: NSObject {
     
     fileprivate var feedbackBubble: FeedbackBubble!
     
-    open var shouldShowFeedbackButton: Bool =  true {
+    open var shouldShowFeedbackButton: Bool = true {
         didSet {
             if shouldShowFeedbackButton {
-                feedbackBubble?.isHidden = false
+                isFeedbackButtonHidden = false
                 addFeedbackButton()
             } else {
+                isFeedbackButtonHidden = true
+            }
+        }
+    }
+    
+    var isFeedbackButtonHidden: Bool = false {
+        didSet {
+            if isFeedbackButtonHidden {
                 feedbackBubble?.isHidden = true
+            } else {
+                feedbackBubble?.isHidden = false
             }
         }
     }
