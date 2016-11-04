@@ -12,14 +12,12 @@ import KeychainSwift
 class FeedbackViewController: UIViewController {
     
     static let ImageAnnotationControllerSegueIdentifier = "showAnnotationScreen"
-    static let DescriptionTextViewPlaceholder = "Add some description here..."
+    static let DescriptionTextViewPlaceholder = "Add your feedback here..."
     
     var screenshot: UIImage?
     var url: URL?
     
-    fileprivate var titleTextField: UITextField!
     fileprivate var descriptionTextView: UITextView!
-    fileprivate var seperatorLine: UIView!
     
     fileprivate var bottomSpaceConstraint: NSLayoutConstraint!
     fileprivate var annotationViewController: UIViewController?
@@ -28,6 +26,7 @@ class FeedbackViewController: UIViewController {
         super.viewDidLoad()
 
         self.title = "Feedback"
+        self.automaticallyAdjustsScrollViewInsets = false
         
         view.backgroundColor = UIColor.white
         
@@ -44,46 +43,7 @@ class FeedbackViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        addTitleTextField()
-        addSeperatorLine()
         addDescriptionTextView()
-    }
-    
-    fileprivate func addTitleTextField() {
-        guard titleTextField == nil else { return }
-        
-        titleTextField = UITextField()
-        titleTextField.translatesAutoresizingMaskIntoConstraints = false
-        titleTextField.placeholder = "Title"
-        titleTextField.font = UIFont.systemFont(ofSize: 14)
-        view.addSubview(titleTextField)
-        
-        let metrics = ["textFieldHeight": 30, "sideSpacing": 8, "topSpacing": 2]
-        let views: [String: AnyObject] = ["titleTextField": titleTextField, "topGuide": topLayoutGuide]
-        
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-sideSpacing-[titleTextField]-sideSpacing-|", options: [], metrics: metrics, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-topSpacing-[titleTextField(textFieldHeight)]", options: [], metrics: metrics, views: views)
-        
-        view.addConstraints(horizontalConstraints)
-        view.addConstraints(verticalConstraints)
-    }
-    
-    fileprivate func addSeperatorLine() {
-        guard seperatorLine == nil else { return }
-        
-        seperatorLine = UIView()
-        seperatorLine.backgroundColor = UIColor.black
-        seperatorLine.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(seperatorLine)
-        
-        let metrics = ["sideSpacing": 0, "verticalSpacing": 0, "lineHeight": 1.0/UIScreen.main.scale]
-        let views: [String: AnyObject] = ["titleTextField": titleTextField, "seperatorLine": seperatorLine]
-        
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-sideSpacing-[seperatorLine]-sideSpacing-|", options: [], metrics: metrics, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[titleTextField]-verticalSpacing-[seperatorLine(lineHeight)]", options: [], metrics: metrics, views: views)
-        
-        view.addConstraints(horizontalConstraints)
-        view.addConstraints(verticalConstraints)
     }
     
     fileprivate func addDescriptionTextView() {
@@ -93,17 +53,17 @@ class FeedbackViewController: UIViewController {
         descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
         descriptionTextView.textContainerInset = UIEdgeInsets.zero
         descriptionTextView.contentInset = UIEdgeInsets.zero
-        descriptionTextView.font = UIFont.systemFont(ofSize: 14)
+        descriptionTextView.font = UIFont.systemFont(ofSize: 16)
         descriptionTextView.text = FeedbackViewController.DescriptionTextViewPlaceholder
         descriptionTextView.textColor = UIColor.lightGray
         descriptionTextView.delegate = self
         view.addSubview(descriptionTextView)
         
         let metrics = ["sideSpacing": 3, "topSpacing": 5]
-        let views: [String: AnyObject] = ["descriptionTextView": descriptionTextView, "seperatorLine": seperatorLine]
+        let views: [String: AnyObject] = ["topGuide": topLayoutGuide, "descriptionTextView": descriptionTextView]
         
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-sideSpacing-[descriptionTextView]-sideSpacing-|", options: [], metrics: metrics, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[seperatorLine]-topSpacing-[descriptionTextView]", options: [], metrics: metrics, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-topSpacing-[descriptionTextView]", options: [], metrics: metrics, views: views)
         bottomSpaceConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: descriptionTextView, attribute: .bottom, multiplier: 1, constant: 0)
         
         view.addConstraints(horizontalConstraints)
@@ -197,7 +157,7 @@ class FeedbackViewController: UIViewController {
         
         let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
         
-        APIHandler.sharedAPIHandler.sendScreenFeedback(titleTextField.text ?? "", screenshot: screenshot, description: descriptionText!, success: {
+        APIHandler.sharedAPIHandler.sendScreenFeedback("", screenshot: screenshot, description: descriptionText!, success: {
             print("Successfully sent feedback to server")
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }) { (error) in

@@ -62,20 +62,6 @@ open class PrototypeViewController: UIViewController {
     fileprivate func addTouchRecognizer() {
         print("add touch recognizer")
         
-        /*
-        if #available(iOS 9.0, *) {
-            if self.view.traitCollection.forceTouchCapability == .available {
-                let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(showFeedbackView), threshold: 0.8)
-                deepPressGestureRecognizer.vibrateOnDeepPress = true
-                deepPressGestureRecognizer.delegate = self
-                touchRecognizer = deepPressGestureRecognizer
-                
-                self.view.addGestureRecognizer(deepPressGestureRecognizer)
-                return
-            }
-        }
-         */
-        
         touchRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(showFeedbackView))
         touchRecognizer.delegate = self
         self.view.addGestureRecognizer(touchRecognizer)
