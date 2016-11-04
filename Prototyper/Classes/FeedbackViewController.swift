@@ -18,6 +18,7 @@ class FeedbackViewController: UIViewController {
     var url: URL?
     
     fileprivate var descriptionTextView: UITextView!
+    fileprivate var screenshotImageView: UIImageView!
     
     fileprivate var bottomSpaceConstraint: NSLayoutConstraint!
     fileprivate var annotationViewController: UIViewController?
@@ -44,6 +45,7 @@ class FeedbackViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         addDescriptionTextView()
+        addScreenshotPreviewImageView()
     }
     
     fileprivate func addDescriptionTextView() {
@@ -59,6 +61,9 @@ class FeedbackViewController: UIViewController {
         descriptionTextView.delegate = self
         view.addSubview(descriptionTextView)
         
+        let imgRect = UIBezierPath(rect: CGRect(x: self.view.bounds.size.width - (125+8), y: 0, width: 125+8, height: 221+8))
+        descriptionTextView.textContainer.exclusionPaths = [imgRect]
+        
         let metrics = ["sideSpacing": 3, "topSpacing": 5]
         let views: [String: AnyObject] = ["topGuide": topLayoutGuide, "descriptionTextView": descriptionTextView]
         
@@ -69,6 +74,26 @@ class FeedbackViewController: UIViewController {
         view.addConstraints(horizontalConstraints)
         view.addConstraints(verticalConstraints)
         view.addConstraint(bottomSpaceConstraint)
+    }
+    
+    fileprivate func addScreenshotPreviewImageView() {
+        guard screenshotImageView == nil else { return }
+        
+        screenshotImageView = UIImageView()
+        screenshotImageView.translatesAutoresizingMaskIntoConstraints = false
+        screenshotImageView.image = screenshot
+        screenshotImageView.layer.borderWidth = 1
+        screenshotImageView.layer.borderColor = UIColor.lightGray.cgColor
+        view.addSubview(screenshotImageView)
+        
+        let metrics = ["sideSpacing": 8, "topSpacing": 8, "width": 125, "height": 221]
+        let views: [String: AnyObject] = ["topGuide": topLayoutGuide, "screenshotImageView": screenshotImageView]
+        
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "[screenshotImageView(width)]-sideSpacing-|", options: [], metrics: metrics, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-topSpacing-[screenshotImageView(height)]", options: [], metrics: metrics, views: views)
+        
+        view.addConstraints(horizontalConstraints)
+        view.addConstraints(verticalConstraints)
     }
     
     // MARK: Observers
@@ -194,6 +219,7 @@ class FeedbackViewController: UIViewController {
 extension FeedbackViewController: ImageAnnotationViewControllerDelegate {
     func imageAnnotated(_ image: UIImage) {
         self.screenshot = image
+        screenshotImageView.image = image
     }
 }
 
