@@ -145,10 +145,10 @@ class FeedbackViewController: UIViewController {
         if !APIHandler.sharedAPIHandler.isLoggedIn {
             let alertController = UIAlertController(title: Texts.LoginAlertSheet.Title, message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.Yes, style: .default, handler: { _ in
-                self.login()
+                self.sendFeedback()
             }))
             alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .cancel, handler: { _ in
-                self.sendFeedback()
+                self.login()
             }))
             self.present(alertController, animated: true, completion: nil)
         } else {

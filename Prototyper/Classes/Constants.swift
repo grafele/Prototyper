@@ -62,7 +62,7 @@ struct Texts {
     }
     
     struct LoginAlertSheet {
-        static let Title = "Do you want to log in?"
+        static let Title = "Send feedback anonymously?"
         static let Yes = "Yes"
         static let No = "No"
     }
