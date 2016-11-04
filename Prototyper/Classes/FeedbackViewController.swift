@@ -22,6 +22,8 @@ class FeedbackViewController: UIViewController {
     
     fileprivate var bottomSpaceConstraint: NSLayoutConstraint!
     fileprivate var annotationViewController: UIViewController?
+    
+    fileprivate var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,7 @@ class FeedbackViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [sendButton, imageButton]
         
         registerNotifcationObserver()
+        addActivityIndicator()
     }
     
     override func viewDidLayoutSubviews() {
@@ -94,6 +97,19 @@ class FeedbackViewController: UIViewController {
         
         view.addConstraints(horizontalConstraints)
         view.addConstraints(verticalConstraints)
+    }
+    
+    private func addActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(activityIndicator)
+        
+        let leftConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: activityIndicator, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+        
+        view.addConstraints([leftConstraint, topConstraint, rightConstraint, bottomConstraint])
     }
     
     // MARK: Observers
@@ -182,10 +198,13 @@ class FeedbackViewController: UIViewController {
         
         let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
         
+        showAcitivityIndicator()
         APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, success: {
             print("Successfully sent feedback to server")
+            self.activityIndicator.stopAnimating()
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }) { (error) in
+            self.activityIndicator.stopAnimating()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             self.showErrorAlert()
         }
@@ -212,6 +231,17 @@ class FeedbackViewController: UIViewController {
     fileprivate func showLoginView() {
         let loginViewController = UIStoryboard(name: "Login", bundle: Bundle(for: LoginViewController.self)).instantiateInitialViewController()!
         self.present(loginViewController, animated: true, completion: nil)
+    }
+    
+    private func showAcitivityIndicator() {
+        view.bringSubview(toFront: activityIndicator)
+        activityIndicator.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
+        activityIndicator.startAnimating()
+        
+        activityIndicator.alpha = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.activityIndicator.alpha = 1
+        })
     }
     
 }
