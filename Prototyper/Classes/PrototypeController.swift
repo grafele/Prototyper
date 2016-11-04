@@ -72,6 +72,7 @@ open class PrototypeController: NSObject {
         let md5String = ((data as NSData).md5() as NSData).description
         let oldMD5String = UserDefaults.standard.string(forKey: PrototypeController.PrototypeControllerMD5HashKey)
         if oldMD5String == nil || md5String != oldMD5String! {
+            deleteOldContainers(in: documentsPath)
             SSZipArchive.unzipFile(atPath: containerPath, toDestination: documentsPath)
             UserDefaults.standard.set(md5String, forKey: PrototypeController.PrototypeControllerMD5HashKey)
         }
@@ -91,6 +92,15 @@ open class PrototypeController: NSObject {
         PrototypeController.webServer.delegate = self
         PrototypeController.webServer.addGETHandler(forBasePath: "/", directoryPath: directoryPath, indexFilename: "index.html", cacheAge: 0, allowRangeRequests: true)
         PrototypeController.webServer.start(withPort: 8080, bonjourName: "Bonjour")
+    }
+    
+    fileprivate func deleteOldContainers(in directoryPath: String) {
+        let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
+        guard let filenames = contents else { return }
+        
+        for filename in filenames where NumberFormatter().number(from: filename) != nil {
+            try? FileManager.default.removeItem(atPath: directoryPath.appending("/\(filename)"))
+        }
     }
     
     fileprivate func prototypePathInDirectory(_ directoryPath: String) -> String? {
