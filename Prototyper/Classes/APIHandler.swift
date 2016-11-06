@@ -148,11 +148,11 @@ class APIHandler {
     fileprivate func bodyDataForImage(_ image: UIImage, boundary: String = defaultBoundary) -> Data {
         let bodyData = NSMutableData()
         
-        let imageData = UIImagePNGRepresentation(image)
+        let imageData = UIImageJPEGRepresentation(image, 0.4)
         
         bodyData.append("--\(boundary)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        bodyData.append("Content-Disposition: form-data; name=\"[feedback]screenshot\"; filename=\"screenshot.png\"\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        bodyData.append("Content-Type: image/png\r\n\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        bodyData.append("Content-Disposition: form-data; name=\"[feedback]screenshot\"; filename=\"screenshot.jpg\"\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        bodyData.append("Content-Type: image/jpeg\r\n\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
         bodyData.append(imageData!)
         bodyData.append("\r\n--\(boundary)--\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
         
