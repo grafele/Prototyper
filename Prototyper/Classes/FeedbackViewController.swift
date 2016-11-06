@@ -64,7 +64,7 @@ class FeedbackViewController: UIViewController {
         descriptionTextView.delegate = self
         view.addSubview(descriptionTextView)
         
-        let imgRect = UIBezierPath(rect: CGRect(x: self.view.bounds.size.width - (125+10), y: 0, width: 125+10, height: 221+8))
+        let imgRect = UIBezierPath(rect: CGRect(x: self.view.bounds.size.width - (125+15), y: 0, width: 125+10, height: 221))
         descriptionTextView.textContainer.exclusionPaths = [imgRect]
         
         let metrics = ["sideSpacing": 6, "topSpacing": 12]
@@ -314,5 +314,9 @@ extension FeedbackViewController: UITextViewDelegate {
         } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return textView.text.characters.count + (text.characters.count - range.length) <= 500
     }
 }
