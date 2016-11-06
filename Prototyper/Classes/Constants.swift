@@ -68,7 +68,7 @@ struct Texts {
     }
     
     struct FeedbackHideAlertSheet {
-        static let Title = "You can still give feedback by using a long press to show the feedback dialog."
+        static let Title = "To unhide it just close and open the app again."
         static let OK = "OK"
     }
 }
