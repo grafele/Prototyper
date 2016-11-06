@@ -199,6 +199,8 @@ class FeedbackViewController: UIViewController {
         screenshot = nil
         screenshotButton.isHidden = true
         descriptionTextView.textContainer.exclusionPaths = []
+        
+        self.navigationItem.rightBarButtonItem?.isEnabled = !descriptionTextView.text.isEmpty
     }
     
     private func login() {
@@ -309,6 +311,9 @@ extension FeedbackViewController: UITextViewDelegate {
             textView.text = FeedbackViewController.DescriptionTextViewPlaceholder
             textView.textColor = UIColor.lightGray
             textView.resignFirstResponder()
+            self.navigationItem.rightBarButtonItem?.isEnabled = screenshot != nil
+        } else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
 }
