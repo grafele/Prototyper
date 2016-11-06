@@ -19,6 +19,7 @@ class FeedbackViewController: UIViewController {
     
     fileprivate var descriptionTextView: UITextView!
     fileprivate var screenshotButton: UIButton!
+    fileprivate var deleteScreenshotButton: UIButton?
     
     fileprivate var bottomSpaceConstraint: NSLayoutConstraint!
     fileprivate var annotationViewController: UIViewController?
@@ -115,20 +116,20 @@ class FeedbackViewController: UIViewController {
         
         let deleteButton = UIButton(type: .custom)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.isOpaque = true
         deleteButton.setBackgroundImage(UIImage(named: "delete_icon", in: Bundle(for: FeedbackViewController.self), compatibleWith: nil), for: .normal)
 
         deleteButton.addTarget(self, action: #selector(deleteScreenshotButtonPressed(_:)), for: .touchUpInside)
-        screenshotButton.addSubview(deleteButton)
+        view.addSubview(deleteButton)
+        deleteScreenshotButton = deleteButton
+
+        let deleteButtonMetrics = ["inset": -17, "size": deleteButtonSize]
+        let deleteButtonViews = ["screenshotButton": screenshotButton, "deleteButton": deleteButton]
         
-        let deleteButtonMetrics = ["inset": -8, "size": deleteButtonSize]
-        let deleteButtonViews = ["deleteButton": deleteButton]
+        let horizontalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "[deleteButton(size)]-inset-[screenshotButton]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
+        let verticalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[deleteButton(size)]-inset-[screenshotButton]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
         
-        let horizontalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-inset-[deleteButton(size)]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
-        let verticalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-inset-[deleteButton(size)]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
-        
-        screenshotButton.addConstraints(horizontalButtonConstraints)
-        screenshotButton.addConstraints(verticalButtonConstraints)
+        view.addConstraints(horizontalButtonConstraints)
+        view.addConstraints(verticalButtonConstraints)
     }
     
     private func addActivityIndicator() {
@@ -208,6 +209,7 @@ class FeedbackViewController: UIViewController {
     func deleteScreenshotButtonPressed(_ sender: Any) {
         screenshot = nil
         screenshotButton.isHidden = true
+        deleteScreenshotButton?.isHidden = true
         descriptionTextView.textContainer.exclusionPaths = []
         
         self.navigationItem.rightBarButtonItem?.isEnabled = !descriptionTextView.text.isEmpty
