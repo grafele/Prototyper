@@ -25,14 +25,13 @@ class FeedbackViewController: UIViewController {
     
     fileprivate var activityIndicator: UIActivityIndicatorView!
     
-    fileprivate var wasFeedbackButtonHidden = false
+    var wasFeedbackButtonHidden = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = "Feedback"
         self.automaticallyAdjustsScrollViewInsets = false
-        self.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
         
         view.backgroundColor = UIColor.white
         
@@ -99,14 +98,26 @@ class FeedbackViewController: UIViewController {
         view.addConstraints(horizontalConstraints)
         view.addConstraints(verticalConstraints)
         
+        let annotationOverlay = UIImageView(image: UIImage(named: "annotation_overlay", in: Bundle(for: FeedbackViewController.self), compatibleWith: nil))
+        annotationOverlay.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(annotationOverlay)
+        
+        let annotationOverlaySize: CGFloat = 60
+        
+        let widthConstraint = NSLayoutConstraint(item: annotationOverlay, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: annotationOverlaySize)
+        let heightConstraint = NSLayoutConstraint(item: annotationOverlay, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: annotationOverlaySize)
+        let centerXConstraint = NSLayoutConstraint(item: annotationOverlay, attribute: .centerX, relatedBy: .equal, toItem: screenshotButton, attribute: .centerX, multiplier: 1, constant: 0)
+        let centerYConstraint = NSLayoutConstraint(item: annotationOverlay, attribute: .centerY, relatedBy: .equal, toItem: screenshotButton, attribute: .centerY, multiplier: 1, constant: 0)
+        
+        view.addConstraints([widthConstraint, heightConstraint, centerXConstraint, centerYConstraint])
+        
         let deleteButtonSize: CGFloat = 25
         
         let deleteButton = UIButton(type: .custom)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.backgroundColor = UIColor.black
-        deleteButton.tintColor = UIColor.white
-        deleteButton.setTitle("x", for: .normal)
-        deleteButton.layer.cornerRadius = deleteButtonSize/2.0
+        deleteButton.isOpaque = true
+        deleteButton.setBackgroundImage(UIImage(named: "delete_icon", in: Bundle(for: FeedbackViewController.self), compatibleWith: nil), for: .normal)
+
         deleteButton.addTarget(self, action: #selector(deleteScreenshotButtonPressed(_:)), for: .touchUpInside)
         screenshotButton.addSubview(deleteButton)
         

@@ -78,6 +78,7 @@ open class PrototypeViewController: UIViewController {
         currentlyPresenting = true
         
         let feedbackViewController = FeedbackViewController()
+        feedbackViewController.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
         PrototypeController.sharedInstance.isFeedbackButtonHidden = true
 
         let screenshot = UIApplication.shared.keyWindow?.snaphot()

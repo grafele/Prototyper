@@ -152,6 +152,7 @@ open class PrototypeController: NSObject {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
 
         let feedbackViewController = FeedbackViewController()
+        feedbackViewController.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
         PrototypeController.sharedInstance.isFeedbackButtonHidden = true
 
         let screenshot = UIApplication.shared.keyWindow?.snaphot()
