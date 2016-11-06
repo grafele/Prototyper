@@ -110,7 +110,7 @@ class FeedbackViewController: UIViewController {
         let centerXConstraint = NSLayoutConstraint(item: annotationOverlay, attribute: .centerX, relatedBy: .equal, toItem: screenshotButton, attribute: .centerX, multiplier: 1, constant: 0)
         let centerYConstraint = NSLayoutConstraint(item: annotationOverlay, attribute: .centerY, relatedBy: .equal, toItem: screenshotButton, attribute: .centerY, multiplier: 1, constant: 0)
         
-        view.addConstraints([widthConstraint, heightConstraint, centerXConstraint, centerYConstraint])
+        screenshotButton.addConstraints([widthConstraint, heightConstraint, centerXConstraint, centerYConstraint])
         
         let deleteButtonSize: CGFloat = 25
         
