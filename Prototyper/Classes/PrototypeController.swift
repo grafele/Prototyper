@@ -150,9 +150,10 @@ open class PrototypeController: NSObject {
     
     private func showFeedbackView() {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
-        
+
         let feedbackViewController = FeedbackViewController()
-        
+        PrototypeController.sharedInstance.isFeedbackButtonHidden = true
+
         let screenshot = UIApplication.shared.keyWindow?.snaphot()
         feedbackViewController.screenshot = screenshot
         

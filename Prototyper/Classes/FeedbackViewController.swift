@@ -33,7 +33,6 @@ class FeedbackViewController: UIViewController {
         self.title = "Feedback"
         self.automaticallyAdjustsScrollViewInsets = false
         self.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
-        PrototypeController.sharedInstance.isFeedbackButtonHidden = true
         
         view.backgroundColor = UIColor.white
         
