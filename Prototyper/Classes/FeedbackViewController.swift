@@ -100,7 +100,7 @@ class FeedbackViewController: UIViewController {
         
         let annotationOverlay = UIImageView(image: UIImage(named: "annotation_overlay", in: Bundle(for: FeedbackViewController.self), compatibleWith: nil))
         annotationOverlay.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(annotationOverlay)
+        screenshotButton.addSubview(annotationOverlay)
         
         let annotationOverlaySize: CGFloat = 60
         
