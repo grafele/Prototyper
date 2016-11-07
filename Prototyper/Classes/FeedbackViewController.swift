@@ -19,7 +19,7 @@ class FeedbackViewController: UIViewController {
     
     fileprivate var descriptionTextView: UITextView!
     fileprivate var screenshotButton: UIButton!
-    fileprivate var deleteScreenshotButton: UIButton?
+    fileprivate var deleteScreenshotButton: UIButton!
     
     fileprivate var bottomSpaceConstraint: NSLayoutConstraint!
     fileprivate var annotationViewController: UIViewController?
