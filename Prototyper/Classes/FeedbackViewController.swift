@@ -212,7 +212,7 @@ class FeedbackViewController: UIViewController {
         deleteScreenshotButton?.isHidden = true
         descriptionTextView.textContainer.exclusionPaths = []
         
-        self.navigationItem.rightBarButtonItem?.isEnabled = !descriptionTextView.text.isEmpty
+        self.navigationItem.rightBarButtonItem?.isEnabled = descriptionTextView.text != FeedbackViewController.DescriptionTextViewPlaceholder
     }
     
     private func login() {
