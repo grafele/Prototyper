@@ -39,14 +39,15 @@ class ImageAnnotationViewController: UIViewController {
         
         imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = UIColor.black
+        imageView.backgroundColor = UIColor.white
+        imageView.contentMode = .topLeft
         imageView.image = image
         view.addSubview(imageView)
         
         let views: [String: AnyObject] = ["topGuide": topLayoutGuide, "bottomGuide": bottomLayoutGuide, "imageView": imageView]
         
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-30-[imageView]-30-|", options: [], metrics: nil, views: views)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-[imageView]-50-[bottomGuide]", options: [], metrics: nil, views: views)
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-33-[imageView]-33-|", options: [], metrics: nil, views: views)
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-[imageView]-45-[bottomGuide]", options: [], metrics: nil, views: views)
         
         view.addConstraints(horizontalConstraints)
         view.addConstraints(verticalConstraints)
@@ -84,7 +85,7 @@ class ImageAnnotationViewController: UIViewController {
         colorPickerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(colorPickerView)
         
-        let metrics = ["topSpacing": 8, "height": 50]
+        let metrics = ["topSpacing": 8, "height": 45]
         let views: [String: AnyObject] = ["bottomGuide": bottomLayoutGuide, "colorPickerView": colorPickerView]
         
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-[colorPickerView]-|", options: [], metrics: metrics, views: views)
