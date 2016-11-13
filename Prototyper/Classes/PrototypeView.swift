@@ -51,10 +51,7 @@ import WebKit
     func loadContent() {
         prototypeURL = URL(string: prototypeAddress)
 
-        guard let prototypeURL = prototypeURL else {
-            print("Prototype URL is not valid")
-            return
-        }
+        guard let prototypeURL = prototypeURL else { return }
         
         let request = URLRequest(url: prototypeURL)
         webView.load(request)

@@ -191,7 +191,7 @@ open class PrototypeController: NSObject {
             UserDefaults.standard.set(appId, forKey: UserDefaultKeys.AppId)
             UserDefaults.standard.set(releaseId, forKey: UserDefaultKeys.ReleaseId)
         }) { error in
-            print("Error fetching release information: \(error)")
+            print("No release information found on Prototyper.")
         }
     }
     

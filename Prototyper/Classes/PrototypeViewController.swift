@@ -60,8 +60,6 @@ open class PrototypeViewController: UIViewController {
     }
     
     fileprivate func addTouchRecognizer() {
-        print("add touch recognizer")
-        
         touchRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(showFeedbackView))
         touchRecognizer.delegate = self
         self.view.addGestureRecognizer(touchRecognizer)
