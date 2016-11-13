@@ -33,9 +33,7 @@ class ShareViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(ShareViewController.cancelButtonPressed(_:)))
         
-        let sendButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(ShareViewController.sendButtonPressed(_:)))
-        
-        self.navigationItem.rightBarButtonItem = sendButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(sendButtonPressed(_:)))
         
         registerNotifcationObserver()
     }
@@ -54,10 +52,10 @@ class ShareViewController: UIViewController {
         emailTextField = UITextField()
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.placeholder = "Share with (E-Mail)"
-        emailTextField.font = UIFont.systemFont(ofSize: 14)
+        emailTextField.font = UIFont.systemFont(ofSize: 17)
         view.addSubview(emailTextField)
         
-        let metrics = ["textFieldHeight": 30, "sideSpacing": 8, "topSpacing": 2]
+        let metrics = ["textFieldHeight": 30, "sideSpacing": 12, "topSpacing": 8]
         let views: [String: AnyObject] = ["emailTextField": emailTextField, "topGuide": topLayoutGuide]
         
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-sideSpacing-[emailTextField]-sideSpacing-|", options: [], metrics: metrics, views: views)
@@ -75,7 +73,7 @@ class ShareViewController: UIViewController {
         seperatorLine.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(seperatorLine)
         
-        let metrics = ["sideSpacing": 0, "verticalSpacing": 0, "lineHeight": 1.0/UIScreen.main.scale]
+        let metrics = ["sideSpacing": 0, "verticalSpacing": 3, "lineHeight": 1.0/UIScreen.main.scale]
         let views: [String: AnyObject] = ["emailTextField": emailTextField, "seperatorLine": seperatorLine]
         
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-sideSpacing-[seperatorLine]-sideSpacing-|", options: [], metrics: metrics, views: views)
@@ -92,13 +90,13 @@ class ShareViewController: UIViewController {
         explanationTextView.translatesAutoresizingMaskIntoConstraints = false
         explanationTextView.textContainerInset = UIEdgeInsets.zero
         explanationTextView.contentInset = UIEdgeInsets.zero
-        explanationTextView.font = UIFont.systemFont(ofSize: 14)
+        explanationTextView.font = UIFont.systemFont(ofSize: 17)
         explanationTextView.text = ShareViewController.ExplanationTextViewPlaceholder
         explanationTextView.textColor = UIColor.lightGray
         explanationTextView.delegate = self
         view.addSubview(explanationTextView)
         
-        let metrics = ["sideSpacing": 3, "topSpacing": 5]
+        let metrics = ["sideSpacing": 7, "topSpacing": 8]
         let views: [String: AnyObject] = ["explanationTextView": explanationTextView, "seperatorLine": seperatorLine]
         
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-sideSpacing-[explanationTextView]-sideSpacing-|", options: [], metrics: metrics, views: views)
@@ -159,10 +157,10 @@ class ShareViewController: UIViewController {
         if !APIHandler.sharedAPIHandler.isLoggedIn {
             let alertController = UIAlertController(title: Texts.LoginAlertSheet.Title, message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.Yes, style: .default, handler: { _ in
-                self.sendFeedback()
-            }))
-            alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .cancel, handler: { _ in
                 self.showLoginView()
+            }))
+            alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .default, handler: { _ in
+                self.askForNameAndSendFeedback()
             }))
             self.present(alertController, animated: true, completion: nil)
         } else {
@@ -170,7 +168,19 @@ class ShareViewController: UIViewController {
         }
     }
     
-    private func sendFeedback() {
+    private func askForNameAndSendFeedback() {
+        let alertController = UIAlertController(title: Texts.StateYourNameAlertSheet.Title, message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = Texts.StateYourNameAlertSheet.Placeholder
+        }
+        alertController.addAction(UIAlertAction(title: Texts.StateYourNameAlertSheet.Send, style: .default, handler: { _ in
+            let name = alertController.textFields?.first?.text ?? ""
+            self.sendFeedback(name: name)
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func sendFeedback(name: String? = nil) {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let explanationText = explanationTextView.text == ShareViewController.ExplanationTextViewPlaceholder ? "" : explanationTextView.text!
