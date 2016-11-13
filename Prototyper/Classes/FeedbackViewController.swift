@@ -195,10 +195,10 @@ class FeedbackViewController: UIViewController {
         if !APIHandler.sharedAPIHandler.isLoggedIn {
             let alertController = UIAlertController(title: Texts.LoginAlertSheet.Title, message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.Yes, style: .default, handler: { _ in
-                self.sendFeedback()
+                self.showLoginView()
             }))
-            alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .cancel, handler: { _ in
-                self.login()
+            alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .default, handler: { _ in
+                self.askForNameAndSendFeedback()
             }))
             self.present(alertController, animated: true, completion: nil)
         } else {
@@ -215,23 +215,19 @@ class FeedbackViewController: UIViewController {
         self.navigationItem.rightBarButtonItem?.isEnabled = descriptionTextView.text != FeedbackViewController.DescriptionTextViewPlaceholder
     }
     
-    private func login() {
-        let keychain = KeychainSwift()
-        let oldUsername = keychain.get(LoginViewController.UsernameKey)
-        let oldPassword = keychain.get(LoginViewController.PasswordKey)
-        
-        if let oldUsername = oldUsername, let oldPassword = oldPassword {
-            APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {
-                self.sendFeedback()
-            }) { (error) in
-                self.showLoginView()
-            }
-        } else {
-            self.showLoginView()
+    private func askForNameAndSendFeedback() {
+        let alertController = UIAlertController(title: Texts.StateYourNameAlertSheet.Title, message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = Texts.StateYourNameAlertSheet.Placeholder
         }
+        alertController.addAction(UIAlertAction(title: Texts.StateYourNameAlertSheet.Send, style: .default, handler: { _ in
+            let name = alertController.textFields?.first?.text ?? ""
+            self.sendFeedback(name: name)
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    private func sendFeedback() {
+    private func sendFeedback(name: String? = nil) {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
@@ -239,13 +235,13 @@ class FeedbackViewController: UIViewController {
         showAcitivityIndicator()
         
         if let screenshot = screenshot {
-            APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, success: {
+            APIHandler.sharedAPIHandler.sendScreenFeedback(screenshot: screenshot, description: descriptionText!, name: name, success: {
                 self.feedbackSendingSuccesfull()
             }) { (error) in
                 self.feedbackSendingFailed()
             }
         } else {
-            APIHandler.sharedAPIHandler.sendGeneralFeedback(description: descriptionText!, success: {
+            APIHandler.sharedAPIHandler.sendGeneralFeedback(description: descriptionText!, name: name, success: {
                 self.feedbackSendingSuccesfull()
             }, failure: { (error) in
                 self.feedbackSendingFailed()
@@ -327,9 +323,13 @@ extension FeedbackViewController: UITextViewDelegate {
         } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
+        
+        let extraHeight = max(0, textView.contentSize.height - textView.bounds.size.height)
+        let imgRect = UIBezierPath(rect: CGRect(x: self.view.bounds.size.width - (125+15), y: 0, width: 125+10, height: 221 + extraHeight))
+        descriptionTextView.textContainer.exclusionPaths = screenshot == nil ? [] : [imgRect]
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        return textView.text.characters.count + (text.characters.count - range.length) <= 500
+        return textView.text.characters.count + (text.characters.count - range.length) <= 2000
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 import NSHash
 import SSZipArchive
 import GCDWebServer
+import KeychainSwift
 
 open class PrototypeController: NSObject {
     open static let sharedInstance = PrototypeController()
@@ -49,13 +50,6 @@ open class PrototypeController: NSObject {
         unzipContainerIfNecessary(containerPath, documentsPath: documentsPath)
         startWebServerForPath(documentsPath) {
             completionHandler?()
-        }
-        
-        APIHandler.sharedAPIHandler.fetchReleaseInformation(success: { (appId, releaseId) in
-            UserDefaults.standard.set(appId, forKey: UserDefaultKeys.AppId)
-            UserDefaults.standard.set(releaseId, forKey: UserDefaultKeys.ReleaseId)
-        }) { error in
-            print("Error fetching release information: \(error)")
         }
     }
     
@@ -188,6 +182,27 @@ open class PrototypeController: NSObject {
         let alertController = UIAlertController(title: Texts.FeedbackHideAlertSheet.Title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: Texts.FeedbackHideAlertSheet.OK, style: .default, handler: nil))
         rootViewController.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: Helpers
+    
+    private func tryToFetchReleaseInfos() {
+        APIHandler.sharedAPIHandler.fetchReleaseInformation(success: { (appId, releaseId) in
+            UserDefaults.standard.set(appId, forKey: UserDefaultKeys.AppId)
+            UserDefaults.standard.set(releaseId, forKey: UserDefaultKeys.ReleaseId)
+        }) { error in
+            print("Error fetching release information: \(error)")
+        }
+    }
+    
+    private func tryToLogin() {
+        let keychain = KeychainSwift()
+        let oldUsername = keychain.get(LoginViewController.UsernameKey)
+        let oldPassword = keychain.get(LoginViewController.PasswordKey)
+        
+        if let oldUsername = oldUsername, let oldPassword = oldPassword {
+            APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {}, failure: { _ in })
+        }
     }
 }
 

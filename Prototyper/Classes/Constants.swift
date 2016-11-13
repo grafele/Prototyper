@@ -34,10 +34,16 @@ struct API {
             return "apps/find_release?bundle_id=\(bundleId)&bundle_version=\(bundleVersion)"
         }
 
-        static func feedback(_ appId: String, releaseId: String, text: String) -> String {
+        static func feedback(_ appId: String, releaseId: String, text: String, username: String? = nil) -> String {
+            if let username = username {
+                return "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[text]=\(text)&feedback[username]=\(username)"
+            }
             return "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[text]=\(text)"
         }
-        static func share(_ appId: String, releaseId: String, sharedEmail: String, explanation: String) -> String {
+        static func share(_ appId: String, releaseId: String, sharedEmail: String, explanation: String, username: String? = nil) -> String {
+            if let username = username {
+                return "apps/\(appId)/releases/\(releaseId)/share_app?share_email=\(sharedEmail)&explanation=\(explanation)&feedback[username]=\(username)"
+            }
             return "apps/\(appId)/releases/\(releaseId)/share_app?share_email=\(sharedEmail)&explanation=\(explanation)"
         }
     }
@@ -62,11 +68,17 @@ struct Texts {
     }
     
     struct LoginAlertSheet {
-        static let Title = "Send feedback anonymously?"
+        static let Title = "Sign in with your TUM ID?"
         static let Yes = "Yes"
         static let No = "No"
     }
-    
+
+    struct StateYourNameAlertSheet {
+        static let Title = "State your name"
+        static let Placeholder = "Anonymous"
+        static let Send = "Send"
+    }
+
     struct FeedbackHideAlertSheet {
         static let Title = "To unhide the feedback button just close and open the app again."
         static let OK = "OK"

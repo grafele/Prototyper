@@ -162,27 +162,11 @@ class ShareViewController: UIViewController {
                 self.sendFeedback()
             }))
             alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.No, style: .cancel, handler: { _ in
-                self.login()
+                self.showLoginView()
             }))
             self.present(alertController, animated: true, completion: nil)
         } else {
             sendFeedback()
-        }
-    }
-    
-    private func login() {
-        let keychain = KeychainSwift()
-        let oldUsername = keychain.get(LoginViewController.UsernameKey)
-        let oldPassword = keychain.get(LoginViewController.PasswordKey)
-        
-        if let oldUsername = oldUsername, let oldPassword = oldPassword {
-            APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {
-                self.sendFeedback()
-            }) { (error) in
-                self.showLoginView()
-            }
-        } else {
-            self.showLoginView()
         }
     }
     

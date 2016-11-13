@@ -84,13 +84,13 @@ class APIHandler {
         }
     }
     
-    func sendGeneralFeedback(description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+    func sendGeneralFeedback(description: String, name: String? = nil, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
             return
         }
         
-        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString), relativeTo: API.BaseURL)!
+        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString, username: name), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in
@@ -98,7 +98,7 @@ class APIHandler {
         }
     }
     
-    func sendScreenFeedback(screenshot: UIImage, description: String, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
+    func sendScreenFeedback(screenshot: UIImage, description: String, name: String? = nil, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
             failure(nil)
@@ -108,7 +108,7 @@ class APIHandler {
         let contentType = "\(MimeType.Multipart.rawValue); boundary=\(defaultBoundary)"
         let bodyData = bodyDataForImage(screenshot)
         
-        let url = URL(string: "apps/\(appId)/releases/\(releaseId)/feedbacks?feedback[text]=\(description.escapedString)", relativeTo: API.BaseURL as URL?)!
+        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString, username: name), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url, bodyData: bodyData, contentType: contentType)
         executeRequest(request as URLRequest) { (data, response, error) in
