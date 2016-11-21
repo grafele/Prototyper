@@ -155,7 +155,12 @@ class ShareViewController: UIViewController {
     }
 
     func sendButtonPressed(_ sender: AnyObject) {
-        guard let email = emailTextField.text, !email.isEmpty else {
+        guard let email = emailTextField.text else {
+            self.showNoEmailAlert()
+            return
+        }
+        
+        guard !email.isEmpty else {
             self.showNoEmailAlert()
             return
         }
