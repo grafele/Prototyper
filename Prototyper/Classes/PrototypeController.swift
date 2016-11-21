@@ -51,6 +51,7 @@ open class PrototypeController: NSObject {
         startWebServerForPath(documentsPath) {
             completionHandler?()
         }
+        tryToFetchReleaseInfos()
     }
     
     open func prototypePathForPageId(_ pageId: String, completionHandler: @escaping (_ prototypePath: String) -> Void) {
