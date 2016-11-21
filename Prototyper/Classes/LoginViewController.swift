@@ -9,6 +9,10 @@
 import UIKit
 import KeychainSwift
 
+protocol LoginViewControllerDelgate: class {
+    func userLoggedIn()
+}
+
 class LoginViewController: UIViewController {
     
     static let UsernameKey = "UsernameKey"
@@ -19,6 +23,8 @@ class LoginViewController: UIViewController {
     @IBOutlet fileprivate weak var passwordField: UITextField!
     
     @IBOutlet weak var loginButton: UIButton!
+    
+    weak var delegate: LoginViewControllerDelgate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +73,7 @@ class LoginViewController: UIViewController {
             keychain.set(password, forKey: LoginViewController.PasswordKey)
 
             self.presentingViewController?.dismiss(animated: true, completion: nil)
+            self.delegate?.userLoggedIn()
         }) { (error) in
             self.showErrorAlert()
         }

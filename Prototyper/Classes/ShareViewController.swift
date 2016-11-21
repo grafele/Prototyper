@@ -182,7 +182,7 @@ class ShareViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func sendFeedback(name: String? = nil) {
+    fileprivate func sendFeedback(name: String? = nil) {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let explanationText = explanationTextView.text == ShareViewController.ExplanationTextViewPlaceholder ? "" : explanationTextView.text!
@@ -208,8 +208,10 @@ class ShareViewController: UIViewController {
     }
     
     fileprivate func showLoginView() {
-        let loginViewController = UIStoryboard(name: "Login", bundle: Bundle(for: LoginViewController.self)).instantiateInitialViewController()!
-        self.present(loginViewController, animated: true, completion: nil)
+        let instantiatedViewController = UIStoryboard(name: "Login", bundle: Bundle(for: LoginViewController.self)).instantiateInitialViewController()
+        guard let navController = instantiatedViewController as? UINavigationController, let loginViewController = navController.topViewController as? LoginViewController else { return }
+        loginViewController.delegate = self
+        self.present(navController, animated: true, completion: nil)
     }
     
 }
@@ -229,5 +231,13 @@ extension ShareViewController: UITextViewDelegate {
             textView.textColor = UIColor.lightGray
             textView.resignFirstResponder()
         }
+    }
+}
+
+// MARK: - LoginViewControllerDelegate
+
+extension ShareViewController: LoginViewControllerDelgate {
+    func userLoggedIn() {
+        self.sendFeedback()
     }
 }

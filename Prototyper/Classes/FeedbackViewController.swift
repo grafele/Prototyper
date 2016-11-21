@@ -229,7 +229,7 @@ class FeedbackViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func sendFeedback(name: String? = nil) {
+    fileprivate func sendFeedback(name: String? = nil) {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let descriptionText = descriptionTextView.text == FeedbackViewController.DescriptionTextViewPlaceholder ? "" : descriptionTextView.text
@@ -283,8 +283,10 @@ class FeedbackViewController: UIViewController {
     }
     
     fileprivate func showLoginView() {
-        let loginViewController = UIStoryboard(name: "Login", bundle: Bundle(for: LoginViewController.self)).instantiateInitialViewController()!
-        self.present(loginViewController, animated: true, completion: nil)
+        let instantiatedViewController = UIStoryboard(name: "Login", bundle: Bundle(for: LoginViewController.self)).instantiateInitialViewController()
+        guard let navController = instantiatedViewController as? UINavigationController, let loginViewController = navController.topViewController as? LoginViewController else { return }
+        loginViewController.delegate = self
+        self.present(navController, animated: true, completion: nil)
     }
     
     private func showAcitivityIndicator() {
@@ -333,5 +335,13 @@ extension FeedbackViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         return textView.text.characters.count + (text.characters.count - range.length) <= 2000
+    }
+}
+
+// MARK: - LoginViewControllerDelegate
+
+extension FeedbackViewController: LoginViewControllerDelgate {
+    func userLoggedIn() {
+        self.sendFeedback()
     }
 }
