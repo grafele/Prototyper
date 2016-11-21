@@ -219,9 +219,11 @@ class FeedbackViewController: UIViewController {
         let alertController = UIAlertController(title: Texts.StateYourNameAlertSheet.Title, message: nil, preferredStyle: .alert)
         alertController.addTextField { textField in
             textField.placeholder = Texts.StateYourNameAlertSheet.Placeholder
+            textField.text = UserDefaults.standard.string(forKey: UserDefaultKeys.Username)
         }
         alertController.addAction(UIAlertAction(title: Texts.StateYourNameAlertSheet.Send, style: .default, handler: { _ in
             let name = alertController.textFields?.first?.text ?? ""
+            UserDefaults.standard.set(name, forKey: UserDefaultKeys.Username)
             self.sendFeedback(name: name)
         }))
         self.present(alertController, animated: true, completion: nil)

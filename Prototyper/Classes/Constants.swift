@@ -74,7 +74,7 @@ struct Texts {
     }
 
     struct StateYourNameAlertSheet {
-        static let Title = "State your name"
+        static let Title = "Please enter your name"
         static let Placeholder = "Anonymous"
         static let Send = "Send"
     }
@@ -88,4 +88,5 @@ struct Texts {
 struct UserDefaultKeys {
     static let AppId = "AppId"
     static let ReleaseId = "ReleaseId"
+    static let Username = "Username"
 }
