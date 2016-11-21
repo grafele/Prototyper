@@ -11,7 +11,7 @@ import KeychainSwift
 
 class ShareViewController: UIViewController {
     
-    static let ExplanationTextViewPlaceholder = "Explain us why we should add this user."
+    static let ExplanationTextViewPlaceholder = "Notes"
 
     fileprivate var emailTextField: UITextField!
     fileprivate var explanationTextView: UITextView!
@@ -52,6 +52,7 @@ class ShareViewController: UIViewController {
         emailTextField = UITextField()
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.placeholder = "Share with (E-Mail)"
+        emailTextField.keyboardType = .emailAddress
         emailTextField.font = UIFont.systemFont(ofSize: 17)
         view.addSubview(emailTextField)
         
@@ -154,6 +155,11 @@ class ShareViewController: UIViewController {
     }
 
     func sendButtonPressed(_ sender: AnyObject) {
+        guard let email = emailTextField.text && !email.isEmpty else {
+            self.showNoEmailAlert()
+            return
+        }
+        
         if !APIHandler.sharedAPIHandler.isLoggedIn {
             let alertController = UIAlertController(title: Texts.LoginAlertSheet.Title, message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: Texts.LoginAlertSheet.Yes, style: .default, handler: { _ in
@@ -201,12 +207,19 @@ class ShareViewController: UIViewController {
     // MARK: Helper
     
     fileprivate func showErrorAlert() {
-        let alertController = UIAlertController(title: "Error", message: "Could not send share request to server!", preferredStyle: UIAlertControllerStyle.alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let alertController = UIAlertController(title: Texts.ShareErrorActionSheet.Title, message: Texts.ShareErrorActionSheet.Message, preferredStyle: UIAlertControllerStyle.alert)
+        let defaultAction = UIAlertAction(title: Texts.ShareErrorActionSheet.OK, style: .default, handler: nil)
         alertController.addAction(defaultAction)
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
+    fileprivate func showNoEmailAlert() {
+        let alertController = UIAlertController(title: Texts.ShareNoEmailActionSheet.Title, message: Texts.ShareNoEmailActionSheet.Message, preferredStyle: UIAlertControllerStyle.alert)
+        let defaultAction = UIAlertAction(title: Texts.ShareNoEmailActionSheet.OK, style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     fileprivate func showLoginView() {
         let instantiatedViewController = UIStoryboard(name: "Login", bundle: Bundle(for: LoginViewController.self)).instantiateInitialViewController()
         guard let navController = instantiatedViewController as? UINavigationController, let loginViewController = navController.topViewController as? LoginViewController else { return }

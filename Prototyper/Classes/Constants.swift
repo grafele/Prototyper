@@ -83,6 +83,18 @@ struct Texts {
         static let Title = "To unhide the feedback button just close and open the app again."
         static let OK = "OK"
     }
+    
+    struct ShareErrorActionSheet {
+        static let Title = "Error"
+        static let Message = "Could not send share request to server!"
+        static let OK = "OK"
+    }
+    
+    struct ShareNoEmailActionSheet {
+        static let Title = "Error"
+        static let Message = "You need to enter a valid email address!"
+        static let OK = "OK"
+    }
 }
 
 struct UserDefaultKeys {
