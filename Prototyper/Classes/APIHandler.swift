@@ -90,7 +90,7 @@ class APIHandler {
             return
         }
         
-        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString, username: name), relativeTo: API.BaseURL)!
+        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString, username: name?.escapedString), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in
@@ -108,7 +108,7 @@ class APIHandler {
         let contentType = "\(MimeType.Multipart.rawValue); boundary=\(defaultBoundary)"
         let bodyData = bodyDataForImage(screenshot)
         
-        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString, username: name), relativeTo: API.BaseURL)!
+        let url = URL(string: API.EndPoints.feedback(appId, releaseId: releaseId, text: description.escapedString, username: name?.escapedString), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url, bodyData: bodyData, contentType: contentType)
         executeRequest(request as URLRequest) { (data, response, error) in
@@ -122,7 +122,7 @@ class APIHandler {
             return
         }
 
-        let url = URL(string: API.EndPoints.share(appId, releaseId: releaseId, sharedEmail: email, explanation: explanation, username: name), relativeTo: API.BaseURL)!
+        let url = URL(string: API.EndPoints.share(appId, releaseId: releaseId, sharedEmail: email, explanation: explanation, username: name?.escapedString), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in
