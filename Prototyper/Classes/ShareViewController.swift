@@ -53,6 +53,7 @@ class ShareViewController: UIViewController {
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.placeholder = "Share with (E-Mail)"
         emailTextField.keyboardType = .emailAddress
+        emailTextField.autocapitalizationType = .none
         emailTextField.font = UIFont.systemFont(ofSize: 17)
         view.addSubview(emailTextField)
         
@@ -198,7 +199,7 @@ class ShareViewController: UIViewController {
         
         let explanationText = explanationTextView.text == ShareViewController.ExplanationTextViewPlaceholder ? "" : explanationTextView.text!
         
-        APIHandler.sharedAPIHandler.sendShareRequest(for: emailTextField.text ?? "", because: explanationText, success: {
+        APIHandler.sharedAPIHandler.sendShareRequest(for: emailTextField.text ?? "", because: explanationText, name: name, success: {
             print("Successfully sent share request to server")
             PrototypeController.sharedInstance.isFeedbackButtonHidden = self.wasFeedbackButtonHidden
             self.presentingViewController?.dismiss(animated: true, completion: nil)
