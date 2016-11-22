@@ -93,7 +93,7 @@ open class PrototypeController: NSObject {
         let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return }
         
-        for filename in filenames where NumberFormatter().number(from: filename) != nil {
+        for filename in filenames where NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil {
             try? FileManager.default.removeItem(atPath: directoryPath.appending("/\(filename)"))
         }
     }
@@ -102,7 +102,7 @@ open class PrototypeController: NSObject {
         let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return nil }
         
-        for filename in filenames where NumberFormatter().number(from: filename) != nil {
+        for filename in filenames where NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil {
             return "http://localhost:8080/\(filename)/marvelapp.com/index.html"
         }
         
