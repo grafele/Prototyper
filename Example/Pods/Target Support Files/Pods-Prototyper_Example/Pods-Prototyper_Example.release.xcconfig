@@ -1,10 +1,9 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
-EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/AFNetworking" "$PODS_CONFIGURATION_BUILD_DIR/GCDWebServer" "$PODS_CONFIGURATION_BUILD_DIR/KeychainSwift" "$PODS_CONFIGURATION_BUILD_DIR/Masonry" "$PODS_CONFIGURATION_BUILD_DIR/NSHash" "$PODS_CONFIGURATION_BUILD_DIR/Prototyper" "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive" "$PODS_CONFIGURATION_BUILD_DIR/jot"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/GCDWebServer" "$PODS_CONFIGURATION_BUILD_DIR/KeychainSwift" "$PODS_CONFIGURATION_BUILD_DIR/Masonry" "$PODS_CONFIGURATION_BUILD_DIR/NSHash" "$PODS_CONFIGURATION_BUILD_DIR/Prototyper" "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive" "$PODS_CONFIGURATION_BUILD_DIR/jot"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/AFNetworking/AFNetworking.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/GCDWebServer/GCDWebServer.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/KeychainSwift/KeychainSwift.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Masonry/Masonry.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/NSHash/NSHash.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Prototyper/Prototyper.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/jot/jot.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -framework "AFNetworking" -framework "GCDWebServer" -framework "KeychainSwift" -framework "Masonry" -framework "NSHash" -framework "Prototyper" -framework "SSZipArchive" -framework "jot"
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/GCDWebServer/GCDWebServer.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/KeychainSwift/KeychainSwift.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Masonry/Masonry.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/NSHash/NSHash.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Prototyper/Prototyper.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/jot/jot.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "GCDWebServer" -framework "KeychainSwift" -framework "Masonry" -framework "NSHash" -framework "Prototyper" -framework "SSZipArchive" -framework "jot"
 OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
