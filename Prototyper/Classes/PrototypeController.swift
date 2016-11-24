@@ -44,14 +44,15 @@ open class PrototypeController: NSObject {
     }
     
     open func preloadPrototypes(_ completionHandler: ((Void) -> Void)?) {
-        let containerPath = Bundle.main.path(forResource: "container", ofType: "zip")!
+        tryToFetchReleaseInfos()
+        guard let containerPath = Bundle.main.path(forResource: "container", ofType: "zip") else { return }
+
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         
         unzipContainerIfNecessary(containerPath, documentsPath: documentsPath)
         startWebServerForPath(documentsPath) {
             completionHandler?()
         }
-        tryToFetchReleaseInfos()
     }
     
     open func prototypePathForPageId(_ pageId: String, completionHandler: @escaping (_ prototypePath: String) -> Void) {
