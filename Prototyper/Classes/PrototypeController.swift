@@ -43,7 +43,7 @@ open class PrototypeController: NSObject {
         }
     }
     
-    open func preloadPrototypes(_ completionHandler: ((Void) -> Void)?) {
+    open func preloadPrototypes(_ completionHandler: ((Void) -> Void)? = nil) {
         tryToFetchReleaseInfos()
         guard let containerPath = Bundle.main.path(forResource: "container", ofType: "zip") else { return }
 
