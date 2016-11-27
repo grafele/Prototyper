@@ -119,10 +119,11 @@ class APIHandler {
     func sendShareRequest(for email: String, because explanation: String, name: String? = nil, success: @escaping (Void) -> Void, failure: @escaping (_ error : Error?) -> Void) {
         guard let appId = appId, let releaseId = releaseId else {
             print("You need to set the app and release id first")
+            failure(nil)
             return
         }
 
-        let url = URL(string: API.EndPoints.share(appId, releaseId: releaseId, sharedEmail: email, explanation: explanation, username: name?.escapedString), relativeTo: API.BaseURL)!
+        let url = URL(string: API.EndPoints.share(appId, releaseId: releaseId, sharedEmail: email.escapedString, explanation: explanation.escapedString, username: name?.escapedString), relativeTo: API.BaseURL)!
         
         let request = jsonRequestForHttpMethod(.POST, requestURL: url)
         executeRequest(request as URLRequest) { (data, response, error) in

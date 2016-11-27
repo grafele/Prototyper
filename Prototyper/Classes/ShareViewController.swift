@@ -195,6 +195,13 @@ class ShareViewController: UIViewController {
     }
     
     fileprivate func sendFeedback(name: String? = nil) {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        guard NSPredicate(format:"SELF MATCHES %@", emailRegEx).evaluate(with: emailTextField.text ?? "") else {
+            print("Invalid email address")
+            self.showNoEmailAlert()
+            return
+        }
+        
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         let explanationText = explanationTextView.text == ShareViewController.ExplanationTextViewPlaceholder ? "" : explanationTextView.text!
