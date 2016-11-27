@@ -126,7 +126,7 @@ open class PrototypeController: NSObject {
             self.hideFeedbackButton()
         })
         actionSheet.addAction(UIAlertAction(title: Texts.FeedbackActionSheet.Cancel, style: .cancel, handler: nil))
-        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+        if let rootViewController = getTopViewController() {
             rootViewController.present(actionSheet, animated: true, completion: nil)
         }
     }
@@ -205,6 +205,18 @@ open class PrototypeController: NSObject {
         if let oldUsername = oldUsername, let oldPassword = oldPassword {
             APIHandler.sharedAPIHandler.login(oldUsername, password: oldPassword, success: {}, failure: { _ in })
         }
+    }
+    
+    private func getTopViewController() -> UIViewController? {
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return nil }
+        
+        var currentVC = rootViewController
+        
+        while let presentedVC = currentVC.presentedViewController {
+            currentVC = presentedVC
+        }
+        
+        return currentVC
     }
 }
 
