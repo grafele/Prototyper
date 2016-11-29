@@ -80,7 +80,9 @@ open class PrototypeController: NSObject {
         guard let filenames = contents else { return nil }
         
         for filename in filenames where PrototypeController.containerMap[container] == nil {
-            return filename
+            if NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil {
+                return filename
+            }
         }
         
         return nil
