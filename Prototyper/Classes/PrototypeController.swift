@@ -44,7 +44,9 @@ open class PrototypeController: NSObject {
         }
     }
     
-    open func preloadPrototypes(_ containers: [String] = [], _ completionHandler: ((Void) -> Void)? = nil) {
+    open func preloadPrototypes(_ containers: [String]? = ["container"], _ completionHandler: ((Void) -> Void)? = nil) {
+        let containers = containers ?? ["container"]
+        
         tryToFetchReleaseInfos()
         
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
