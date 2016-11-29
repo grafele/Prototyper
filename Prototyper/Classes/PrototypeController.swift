@@ -62,8 +62,6 @@ open class PrototypeController: NSObject {
     }
     
     open func prototypePathForContainer(_ container: String) -> String {
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        
         if let filename = PrototypeController.containerMap[container] {
             return "http://localhost:8080/\(filename)/marvelapp.com/index.html"
         }
@@ -72,7 +70,7 @@ open class PrototypeController: NSObject {
     }
     
     fileprivate func unzipContainerIfNecessary(_ containerPath: String, destination: String, container: String) -> String? {
-        guard let data = FileManager.default.contents(atPath: containerPath) else { return nil }
+        guard let _ = FileManager.default.contents(atPath: containerPath) else { return nil }
         
         try? SSZipArchive.unzipFile(atPath: containerPath, toDestination: destination, overwrite: false, password: nil)
         
