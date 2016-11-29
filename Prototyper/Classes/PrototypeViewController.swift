@@ -40,10 +40,14 @@ open class PrototypeViewController: UIViewController {
         addTouchRecognizer()
     }
     
+    @available(*, deprecated)
     open func loadPrototypePage(_ pageId: String) {
-        PrototypeController.sharedInstance.prototypePathForPageId(pageId) { (prototypePath) in
-            self.prototypeAddress = prototypePath
-        }
+        print("This method is deprecated. Use loadPrototypeContainer instead")
+    }
+    
+    open func loadPrototypeContainer(_ container: String) {
+        print(PrototypeController.sharedInstance.prototypePathForContainer(container))
+        self.prototypeAddress = PrototypeController.sharedInstance.prototypePathForContainer(container)
     }
     
     fileprivate func createPrototypeView() {
@@ -69,7 +73,7 @@ open class PrototypeViewController: UIViewController {
     
     open func showFeedbackView() {
         print("show feedback view")
-
+        
         guard presentingViewController == nil else { return }
         guard !currentlyPresenting else { return }
         
@@ -78,7 +82,7 @@ open class PrototypeViewController: UIViewController {
         let feedbackViewController = FeedbackViewController()
         feedbackViewController.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
         PrototypeController.sharedInstance.isFeedbackButtonHidden = true
-
+        
         let screenshot = UIApplication.shared.keyWindow?.snaphot()
         feedbackViewController.screenshot = screenshot
         

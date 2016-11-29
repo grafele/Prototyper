@@ -15,7 +15,8 @@ import KeychainSwift
 open class PrototypeController: NSObject {
     open static let sharedInstance = PrototypeController()
     fileprivate static var webServer: GCDWebServer!
-
+    fileprivate static var containerMap = [String: String]()
+    
     fileprivate static let PrototypeControllerMD5HashKey = "PrototypeControllerMD5HashKey"
     
     fileprivate var completionHandler: ((Void) -> Void)?
@@ -43,37 +44,48 @@ open class PrototypeController: NSObject {
         }
     }
     
-    open func preloadPrototypes(_ completionHandler: ((Void) -> Void)? = nil) {
+    open func preloadPrototypes(_ containers: [String] = [], _ completionHandler: ((Void) -> Void)? = nil) {
         tryToFetchReleaseInfos()
-        guard let containerPath = Bundle.main.path(forResource: "container", ofType: "zip") else { return }
-
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         
-        unzipContainerIfNecessary(containerPath, documentsPath: documentsPath)
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        deleteOldContainers(in: documentsPath)
+        
+        for containerFile in containers {
+            if let containerPath = Bundle.main.path(forResource: containerFile, ofType: "zip") {
+                PrototypeController.containerMap[containerFile] = unzipContainerIfNecessary(containerPath, destination: documentsPath, container: containerFile)
+            }
+        }
+        
         startWebServerForPath(documentsPath) {
             completionHandler?()
         }
     }
     
-    open func prototypePathForPageId(_ pageId: String, completionHandler: @escaping (_ prototypePath: String) -> Void) {
+    open func prototypePathForContainer(_ container: String) -> String {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        preloadPrototypes {
-            completionHandler("\(self.prototypePathInDirectory(documentsPath) ?? "")?exp=1#\(pageId)")
+        
+        if let filename = PrototypeController.containerMap[container] {
+            return "http://localhost:8080/\(filename)/marvelapp.com/index.html"
         }
+        
+        return ""
     }
     
-    fileprivate func unzipContainerIfNecessary(_ containerPath: String, documentsPath: String) {
-        guard let data = FileManager.default.contents(atPath: containerPath) else { return }
+    fileprivate func unzipContainerIfNecessary(_ containerPath: String, destination: String, container: String) -> String? {
+        guard let data = FileManager.default.contents(atPath: containerPath) else { return nil }
         
-        let md5String = ((data as NSData).md5() as NSData).description
-        let oldMD5String = UserDefaults.standard.string(forKey: PrototypeController.PrototypeControllerMD5HashKey)
-        if oldMD5String == nil || md5String != oldMD5String! {
-            deleteOldContainers(in: documentsPath)
-            SSZipArchive.unzipFile(atPath: containerPath, toDestination: documentsPath)
-            UserDefaults.standard.set(md5String, forKey: PrototypeController.PrototypeControllerMD5HashKey)
+        try? SSZipArchive.unzipFile(atPath: containerPath, toDestination: destination, overwrite: false, password: nil)
+        
+        let contents = try? FileManager.default.contentsOfDirectory(atPath: destination)
+        guard let filenames = contents else { return nil }
+        
+        for filename in filenames where PrototypeController.containerMap[container] == nil {
+            return filename
         }
+        
+        return nil
     }
-
+    
     fileprivate func startWebServerForPath(_ directoryPath: String, completionHandler: @escaping (Void) -> Void) {
         guard PrototypeController.webServer == nil else {
             completionHandler()
@@ -83,7 +95,7 @@ open class PrototypeController: NSObject {
         self.completionHandler = completionHandler
         
         GCDWebServer.setLogLevel(3)
-
+        
         PrototypeController.webServer = GCDWebServer()
         PrototypeController.webServer.delegate = self
         PrototypeController.webServer.addGETHandler(forBasePath: "/", directoryPath: directoryPath, indexFilename: "index.html", cacheAge: 0, allowRangeRequests: true)
@@ -94,11 +106,17 @@ open class PrototypeController: NSObject {
         let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return }
         
-        for filename in filenames where NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil {
+        for filename in filenames {
             try? FileManager.default.removeItem(atPath: directoryPath.appending("/\(filename)"))
         }
     }
     
+    @available(*, deprecated)
+    open func prototypePathForPageId(_ pageId: String, completionHandler: @escaping (_ prototypePath: String) -> Void) {
+        print("This method is deprecated. Use prototypePathForContainer instead")
+    }
+    
+    @available(*, deprecated)
     fileprivate func prototypePathInDirectory(_ directoryPath: String) -> String? {
         let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return nil }
@@ -146,11 +164,11 @@ open class PrototypeController: NSObject {
     
     private func showFeedbackView() {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
-
+        
         let feedbackViewController = FeedbackViewController()
         feedbackViewController.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
         PrototypeController.sharedInstance.isFeedbackButtonHidden = true
-
+        
         let screenshot = UIApplication.shared.keyWindow?.snaphot()
         feedbackViewController.screenshot = screenshot
         
@@ -159,7 +177,7 @@ open class PrototypeController: NSObject {
     }
     
     private func hideFeedbackButton() {
-        UIView.animate(withDuration: 0.3, animations: { 
+        UIView.animate(withDuration: 0.3, animations: {
             self.feedbackBubble?.alpha = 0.0
         }) { _ in
             self.shouldShowFeedbackButton = false
@@ -173,14 +191,14 @@ open class PrototypeController: NSObject {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
         
         let shareViewController = ShareViewController()
-                
+        
         let navigationController = UINavigationController(rootViewController: shareViewController)
         rootViewController.present(navigationController, animated: true, completion: nil)
     }
     
     private func showInfoAlertAfterHiding() {
         guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
-
+        
         let alertController = UIAlertController(title: Texts.FeedbackHideAlertSheet.Title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: Texts.FeedbackHideAlertSheet.OK, style: .default, handler: nil))
         rootViewController.present(alertController, animated: true, completion: nil)

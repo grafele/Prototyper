@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Prototyper'
-  s.version          = '0.8.9'
+  s.version          = '0.9.0'
   s.summary          = 'Framework to mix prototypes and real apps.'
 
 # This description is used to generate tags and improve search results.

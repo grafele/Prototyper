@@ -14,7 +14,7 @@ class ViewController: PrototypeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        self.loadPrototypePage("12469416")
+        self.loadPrototypeContainer("container")
         PrototypeController.sharedInstance.shouldShowFeedbackButton = true
     }
     
