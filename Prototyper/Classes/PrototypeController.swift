@@ -28,6 +28,7 @@ open class PrototypeController: NSObject {
             if shouldShowFeedbackButton {
                 isFeedbackButtonHidden = false
                 addFeedbackButton()
+                tryToFetchReleaseInfos()
             } else {
                 isFeedbackButtonHidden = true
             }
