@@ -166,7 +166,7 @@ open class PrototypeController: NSObject {
     }
     
     private func showFeedbackView() {
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        guard let rootViewController = getTopViewController() else { return }
         
         let feedbackViewController = FeedbackViewController()
         feedbackViewController.wasFeedbackButtonHidden = PrototypeController.sharedInstance.isFeedbackButtonHidden
@@ -191,7 +191,7 @@ open class PrototypeController: NSObject {
     }
     
     private func shareApp() {
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        guard let rootViewController = getTopViewController() else { return }
         
         let shareViewController = ShareViewController()
         
@@ -200,7 +200,7 @@ open class PrototypeController: NSObject {
     }
     
     private func showInfoAlertAfterHiding() {
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return }
+        guard let rootViewController = getTopViewController() else { return }
         
         let alertController = UIAlertController(title: Texts.FeedbackHideAlertSheet.Title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: Texts.FeedbackHideAlertSheet.OK, style: .default, handler: nil))
