@@ -81,7 +81,7 @@ open class PrototypeController: NSObject {
         guard let filenames = contents else { return nil }
         
         for filename in filenames where PrototypeController.containerMap[container] == nil {
-            if NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil {
+            if isPrototypeFolder(filename) {
                 return filename
             }
         }
@@ -109,7 +109,7 @@ open class PrototypeController: NSObject {
         let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return }
         
-        for filename in filenames {
+        for filename in filenames where isPrototypeFolder(filename) {
             try? FileManager.default.removeItem(atPath: directoryPath.appending("/\(filename)"))
         }
     }
@@ -124,7 +124,7 @@ open class PrototypeController: NSObject {
         let contents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)
         guard let filenames = contents else { return nil }
         
-        for filename in filenames where NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil {
+        for filename in filenames where isPrototypeFolder(filename) {
             return "http://localhost:8080/\(filename)/marvelapp.com/index.html"
         }
         
@@ -236,6 +236,10 @@ open class PrototypeController: NSObject {
         }
         
         return currentVC
+    }
+    
+    private func isPrototypeFolder(_ filename: String) -> Bool {
+        return NumberFormatter().number(from: filename) != nil || filename.range(of: "c_") != nil
     }
 }
 
