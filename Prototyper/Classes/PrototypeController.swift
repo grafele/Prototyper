@@ -153,10 +153,8 @@ open class PrototypeController: NSObject {
     }
     
     private func addFeedbackButton() {
-        guard self.feedbackBubble == nil else { return }
-        
         let keyWindow = UIApplication.shared.keyWindow ?? UIApplication.shared.windows.first
-        feedbackBubble = FeedbackBubble(target: self, action: #selector(feedbackBubbleTouched))
+        feedbackBubble = feedbackBubble == nil ? FeedbackBubble(target: self, action: #selector(feedbackBubbleTouched)) : feedbackBubble
         feedbackBubble.layer.zPosition = 100
         keyWindow?.addSubview(feedbackBubble)
         
