@@ -10,10 +10,10 @@ import UIKit
 
 open class PrototypeViewController: UIViewController {
     
-    open var prototypeAddress: String = "" {
+    open var prototypeContainerName: String = "container" {
         didSet {
             guard prototypeView != nil else { return }
-            prototypeView.prototypeAddress = prototypeAddress
+            prototypeView.prototypeContainerName = prototypeContainerName
             prototypeView.loadContent()
         }
     }
@@ -34,7 +34,7 @@ open class PrototypeViewController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
         
         createPrototypeView()
-        prototypeView.prototypeAddress = prototypeAddress
+        prototypeView.prototypeContainerName = prototypeContainerName
         prototypeView.loadContent()
         
         addTouchRecognizer()
@@ -47,7 +47,7 @@ open class PrototypeViewController: UIViewController {
     
     open func loadPrototypeContainer(_ container: String) {
         print(PrototypeController.sharedInstance.prototypePathForContainer(container))
-        self.prototypeAddress = PrototypeController.sharedInstance.prototypePathForContainer(container)
+        self.prototypeContainerName = container
     }
     
     fileprivate func createPrototypeView() {

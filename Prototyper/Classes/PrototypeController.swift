@@ -45,7 +45,21 @@ open class PrototypeController: NSObject {
         }
     }
     
-    open func preloadPrototypes(_ containers: [String]? = ["container"], _ completionHandler: ((Void) -> Void)? = nil) {
+    open func setupPrototyper(shouldShowFeedbackButton: Bool) {
+        self.shouldShowFeedbackButton = shouldShowFeedbackButton
+        
+        var files: [String] = []
+        for path in Bundle.main.paths(forResourcesOfType: "zip", inDirectory: nil) {
+            if let fileName = (path.characters.split{$0 == "/"}).map(String.init).last, let fileNameWithoutExtension = NSURL(fileURLWithPath: fileName).deletingPathExtension?.lastPathComponent {
+                files.append(fileNameWithoutExtension)
+            }
+        }
+        
+        preloadPrototypes(files)
+    }
+    
+    
+    func preloadPrototypes(_ containers: [String]? = ["container"], _ completionHandler: ((Void) -> Void)? = nil) {
         let containers = containers ?? ["container"]
         
         tryToFetchReleaseInfos()

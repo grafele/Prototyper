@@ -21,6 +21,19 @@ To use the Prototyper framework you need an account for the [Prototyper online s
     pod 'Prototyper'
     ```
 
+    To guarantee that you can configure prototypes directly in Interface Builder add the following lines at the end of your Podfile:
+
+    ```swift
+    post_install do |installer|
+        installer.pods_project.targets.each do |target|
+            target.new_shell_script_build_phase.shell_script = "mkdir -p $PODS_CONFIGURATION_BUILD_DIR/#{target.name}"
+            target.build_configurations.each do |config|
+                config.build_settings['CONFIGURATION_BUILD_DIR'] = '$PODS_CONFIGURATION_BUILD_DIR'
+            end
+        end
+    end
+    ```
+
 2. Add App transport security exception for localhost:
 
     ```xml
