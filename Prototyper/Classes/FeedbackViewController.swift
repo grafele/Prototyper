@@ -123,7 +123,7 @@ class FeedbackViewController: UIViewController {
         deleteScreenshotButton = deleteButton
 
         let deleteButtonMetrics = ["inset": -17, "size": deleteButtonSize]
-        let deleteButtonViews = ["screenshotButton": screenshotButton, "deleteButton": deleteButton]
+        let deleteButtonViews = ["screenshotButton": screenshotButton!, "deleteButton": deleteButton]
         
         let horizontalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "[deleteButton(size)]-inset-[screenshotButton]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
         let verticalButtonConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[deleteButton(size)]-inset-[screenshotButton]", options: [], metrics: deleteButtonMetrics, views: deleteButtonViews)
